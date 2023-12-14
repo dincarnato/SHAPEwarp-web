@@ -1,0 +1,428 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ecf0f1;
+}
+
+.page-title {
+    font-family: "Orbitron", sans-serif;
+    font-size: 2.5rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #ffffff;
+}
+
+.page-title2 {
+    font-size: 3.5rem;
+    color: #6eb73f;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.container-centered {
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    max-width: 1200px;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.menu-bar {
+    background-color: #6eb73f; /* Different color for the menu bar */
+    color: white;
+    height: 49px;
+    display: block;
+    align-items: center;
+}
+
+.menu-bar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-bar nav li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.menu-bar nav a {
+    text-decoration: none;
+    color: #333333;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 48px; /* Vertically align the text */
+    box-sizing: border-box; /* Ensure padding is included in the total width */
+    background-color: #6eb73f; /* Add a box around the text */
+    padding: 16px 14px; /* Adjust padding for the box */
+}
+
+.menu-bar nav a:hover {
+    box-sizing: border-box; /* Ensure padding is included in the total width */
+    color: white;
+    background-color: #444444; /* Add a box around the text */
+    padding: 16px 14px; /* Adjust padding for the box */
+}
+
+/* Align menu items to the left */
+.menu-bar nav {
+    text-align: left;
+}
+
+header {
+    background-color: #444444;
+    color: white;
+    padding: 1em 0;
+    margin: 0;
+}
+
+#main-content {
+    background-color: #ecf0f1;
+    padding: 20px 0;
+}
+
+.form-row {
+    display: flex; /* Use flexbox to align children horizontally */
+}
+
+/* Update the styles for the "database" and "email" divs within the form-row */
+.form-row .form-section {
+    width: auto;
+    margin-right: 2%;
+    box-sizing: border-box;
+}
+
+.form-elem-half {
+    width: 50%;
+}
+
+/* Clear the margin for the last div in the row */
+.form-row .form-section:last-child {
+    margin-right: 0;   
+}
+.form-section {
+    margin-bottom: 20px;
+}
+.form-section-padded {
+    padding-bottom: 40px;
+}
+
+.form-frame {
+    border: 1px solid #555555;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    padding-top: 30px;
+    padding-bottom: 0;
+    padding-left: 20px;
+    padding-right: 20px;
+    position: relative;
+}
+
+/* CSS for the title inside the broken top */
+.form-frame:before {
+    content: attr(data-title);
+    font-weight: bold;
+    position: absolute;
+    top: -12px;
+    left: 1.5%;
+    padding: 0 6px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border: 1px solid black;
+    color: white;
+    background-color: #555555;
+    white-space: nowrap; 
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+textarea,
+select,
+input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+textarea {
+    resize: none;
+}
+
+.half-width {
+    width: 50%;
+}
+
+input[type="submit"],
+input[type="reset"] {
+    font-family: "Raleway", sans-serif;
+    color: white;
+    font-weight: 600;
+    font-size: 1.2rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    padding: 10px 15px; /* Adjusted padding for smaller buttons */
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-right: 10px;
+    width: auto; /* Set width to auto for smaller buttons */
+}
+
+input[type="submit"] {
+    background-color: #6eb73f;
+}
+
+input[type="reset"] {
+    background-color: #be3f31;
+}
+
+/* Style for file input container */
+.file-input-container {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+}
+
+/* Style for hiding the default file input */
+input[type="file"] {
+    display: none;
+}
+
+/* Style for file input label to act as the custom button */
+.file-input-label {
+    display: inline-block;
+    padding: 10px 15px; /* Adjusted padding for consistency with the custom button */
+    border: none;
+    border-radius: 4px;
+    background-color: #bbbbbb; /* Match the submit button background color */
+    color: black;
+    font-weight: normal;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+/* Style for file name display */
+.file-name {
+    margin-left: 10px; /* Adjust spacing between button and file name */
+    color: #333333; /* Match the color to your design */
+    font-size: 14px;
+    display: inline-block;
+}
+
+.checkbox-section {
+    display: flex;
+    align-items: center;
+}
+
+/* Hide the default checkbox */
+input[type="checkbox"] {
+    display: none;
+}
+
+/* Style for custom checkbox */
+input[type="checkbox"] + label {
+    position: relative;
+    padding-left: 25px; /* Adjust the space for the custom checkbox */
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+/* Pseudo-element for custom checkbox */
+input[type="checkbox"] + label::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 16px; /* Set the width of the custom checkbox */
+    height: 16px; /* Set the height of the custom checkbox */
+    border: 2px solid #555;
+    background-color: #fff;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+/* Pseudo-element for tick mark */
+input[type="checkbox"] + label::after {
+    content: "\2713"; /* Unicode character for a checkmark */
+    position: absolute;
+    left: 3px; /* Adjust the position of the tick mark */
+    top: 1px; /* Adjust the position of the tick mark */
+    color: #fff; /* Color of the tick mark */
+    font-size: 12px; /* Adjust the size of the tick mark */
+    display: none; /* Initially hide the tick mark */
+}
+
+/* Style for checked state */
+input[type="checkbox"]:checked + label::before {
+    background-color: #6eb73f;
+    border-color: #6eb73f;
+}
+
+/* Style for checked state (after click) */
+input[type="checkbox"]:checked + label::after {
+    display: block; /* Show the tick mark when checked */
+}
+
+
+button {
+    background-color: #bbbbbb;
+    color: black;
+    cursor: pointer;
+    padding: 10px 15px; /* Adjusted padding for smaller buttons */
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-right: 10px;
+    width: auto; /* Set width to auto for smaller buttons */
+}
+
+.right-button {
+    margin-top: 5px;
+    float: right;
+    margin-left: 2px;
+    margin-bottom: 30px;
+}
+
+footer {
+    background-color: #444444;
+    color: white;
+    text-align: center;
+    padding: 1em 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    text-align: right;
+}
+
+#results {
+    margin-top: 20px;
+}
+
+.result-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.result-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: none;
+    position: relative;
+    font-size: 14px;
+}
+
+.header-row {
+    background-color: #555555;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.even {
+    background-color: #dddddd;
+}
+
+.odd {
+    background-color: #cccccc;
+}
+
+.non-signif {
+    background-color: #e6cece;
+}
+
+.result-col {
+    flex: 1;
+    min-width: 50px;
+    text-align: center;
+    overflow-wrap: break-word;
+}
+
+.details-div {
+    display: none;
+    padding: 20px;
+    transition: all 0.3s ease;
+    position: relative; /* Change position to relative */
+}
+
+.error-message {
+    position: fixed;
+    bottom: 80px;
+    right: 10px;
+    background-color: #ff4444;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+a, a:active, a:hover {
+    color: inherit!important;
+}
+
+footer a, a:active, a:hover {
+    text-decoration: none;
+}
+
+.tabs {
+    display: flex;
+}
+
+.tab {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #555555;
+    color: white;
+    font-size: 14px;
+    border-radius: 5px 5px 0 0;
+    margin-right: 5px;
+}
+
+.tab.active {
+    background-color: #ecf0f1;
+    color: black;
+}
+
+.tab:hover {
+    background-color: #ecf0f1;
+    color: black;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+    font-size: 14px;
+    background-color: #ecf0f1;
+    border-radius: 0 0 5px 5px;
+    overflow: auto;
+}
+
+.tab-content.active {
+    display: block;
+    background-color: #ecf0f1;
+    color: black;
+}
+
+.detail-col-1 {
+    font-weight: bold;
+    padding-right: 10px;
+}
