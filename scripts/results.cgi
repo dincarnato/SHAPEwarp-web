@@ -9,11 +9,10 @@ use lib "/Users/danny/repos/RNAFramework/lib";
 use Core::Mathematics qw(:all);
 
 my ($cgi, $jobId, $newUrl, $maxAlnRowLen,
-    $plotData, $hasStruct);
+    $plotData);
 $cgi = CGI->new();
 $jobId = $cgi->param("jobId");
 $maxAlnRowLen = 60;
-$hasStruct = 0;
 
 print $cgi->header("text/html");
 
@@ -23,7 +22,7 @@ print <<HTML;
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>SHAPEwarp - Submit a job</title>
+      <title>SHAPEwarp</title>
       <link rel="stylesheet" href="../css/styles.css">
       <link href="https://fonts.googleapis.com/css?family=Merriweather:400,400i|Orbitron:900|Raleway:300,400,400i,600,700" rel="stylesheet">
       <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -31,7 +30,7 @@ print <<HTML;
       <script src="https://www.incarnatolab.com/js/svg-pan-zoom.js"></script>
    </head>
    <body>
-      <div class="menu-bar">
+      <div id="menu-bar" class="menu-bar">
          <div class="container">
             <nav>
                <ul>
@@ -146,7 +145,9 @@ HTML
 
 }
 
-print <<HTML;
+if (defined $plotData) {
+
+    print <<HTML;
         </div>
       </section>
       <footer>
@@ -304,13 +305,19 @@ $plotData
         };
 HTML
 
-print <<HTML if (defined $newUrl);
+}
+
+if (defined $newUrl) {
+
+    print <<HTML;
         \$(document).ready(function(){
             setTimeout(function() {
                 window.location.href = "$newUrl";
             }, 0);
         });
 HTML
+
+}
 
 print <<HTML;
     </script>
@@ -320,8 +327,9 @@ HTML
 
 sub resultsToTable {
 
-    my ($header, $n);
+    my ($header, $n, $hasStruct);
     ($header, $n) = (0, 0);
+    $hasStruct = hasStruct();
 
     open(my $fh, "<", "../results/$jobId/results.out");
     while(<$fh>) {
@@ -331,7 +339,6 @@ sub resultsToTable {
         if (!$header) {
 
             $header = 1;
-            $hasStruct = 1 if (/MfePvalue/);
 
             print <<HTML;
                     <div class="result-row header-row">
@@ -735,5 +742,24 @@ sub getLineCount {
     $result =~ s/\s//g;
 
     return($result || 0);
+
+}
+
+sub hasStruct {
+
+    open(my $fh, "<", "../results/$jobId/params.out");
+    while(<$fh>) {
+
+        chomp;
+
+        if (/^eval-align-fold = (.+?)$/) {
+
+            return(1) if ($1 ne "false");
+
+            return;
+
+        }
+
+    }
 
 }

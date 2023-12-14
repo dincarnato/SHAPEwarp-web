@@ -9,7 +9,7 @@
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     </head>
     <body>
-        <div class="menu-bar">
+        <div id="menu-bar" class="menu-bar">
             <div class="container">
                 <nav>
                     <ul>
@@ -112,7 +112,7 @@
                             <div class="form-row">
                                 <div class="form-section">
                                     <label for="kmer-max-gc-diff">Kmer max GC difference:</label>
-                                    <input type="text" id="kmer-max-gc-diff" name="kmer-max-gc-diff" value="">
+                                    <input type="text" id="kmer-max-gc-diff" name="kmer-max-gc-diff" value="auto">
                                 </div>
                                 <div class="form-section checkbox-section">
                                     <input type="checkbox" id="match-kmer-gc-content" name="match-kmer-gc-content">
@@ -122,7 +122,7 @@
                             <div class="form-row">
                                 <div class="form-section">
                                     <label for="kmer-max-seq-dist">Kmer max sequence distance:</label>
-                                    <input type="text" id="kmer-max-seq-dist" name="kmer-max-seq-dist" value="">
+                                    <input type="text" id="kmer-max-seq-dist" name="kmer-max-seq-dist" value="0">
                                 </div>
                                 <div class="form-section checkbox-section">
                                     <input type="checkbox" id="match-kmer-seq" name="match-kmer-seq">
@@ -180,7 +180,7 @@
                                 </div>
                                 <div class="form-section">
                                     <label for="align-seq-mismatch-score">Sequence mismatch score:</label>
-                                    <input type="text" id="align-seq-mismatch-score" name="kalign-seq-mismatch-score" value="0.5">
+                                    <input type="text" id="align-seq-mismatch-score" name="kalign-seq-mismatch-score" value="-2">
                                 </div>
                                 <div class="form-section checkbox-section">
                                     <input type="checkbox" id="align-score-seq" name="align-score-seq">
@@ -201,7 +201,7 @@
                                     <input type="text" id="shufflings" name="shufflings" value="100">
                                 </div>
                                 <div class="form-section">
-                                    <label for="block-size">Sequence mismatch score:</label>
+                                    <label for="block-size">Block size:</label>
                                     <input type="text" id="block-size" name="block-size" value="3">
                                 </div>
                                 <div class="form-section checkbox-section">
@@ -356,8 +356,8 @@
             
                 $('#example-data').on('click', function() {
                     var sampleData = "Ecoli_16S\n" +
-                                    "GATGTGAAATCCCCGGGCTCAACCTGGGAACTGCATCTGATACTGGCAAGCTTGAGTCTCGTAGAGGGGGGTAGAATTCCAGGTGTAGCGGTGAAATGCGTAGAGATCTGGAGGAATACCGGTGGCGAAGGCGGCCCCCTGGACGAAGACTGACGCTCAGGTGCGAAAGCGTGGGGAGCAAACAGGATTAGATACCCTGG\n" +
-                                    "0.052,0.046,0.108,0.241,0.221,1.224,0.246,0.846,1.505,0.627,0.078,0.002,0.056,0.317,0.114,0.157,0.264,1.016,2.925,2.205,1.075,1.210,0.191,0.016,0.045,0.015,0.087,0.572,0.052,0.157,0.796,2.724,0.027,0.000,0.000,0.000,0.000,0.000,0.004,0.003,0.063,0.144,0.072,0.054,0.096,0.112,0.002,0.000,0.019,0.026,0.021,1.022,2.108,0.111,0.000,0.007,0.000,0.002,0.000,0.010,0.037,0.078,0.152,0.355,1.738,0.715,0.211,0.179,0.036,0.046,0.159,0.257,0.312,0.931,0.798,0.618,0.935,0.147,0.015,0.014,0.031,0.147,0.149,0.577,1.052,1.410,0.487,0.636,0.238,0.286,0.462,1.586,1.683,0.597,1.165,1.265,2.094,0.422,0.462,1.900,4.055,0.481,0.511,0.087,1.217,1.180,0.094,0.018,0.033,0.081,0.148,0.163,0.160,1.019,0.339,0.507,1.039,0.824,0.122,0.420,0.429,0.913,1.383,0.610,0.417,0.825,0.743,0.433,0.401,0.993,0.497,0.404,0.407,0.316,0.017,0.005,0.046,0.072,0.037,0.091,0.282,0.203,0.033,0.004,0.021,0.262,0.157,0.050,0.019,0.059,0.102,0.083,0.066,0.040,0.075,0.061,0.573,0.631,0.427,0.265,1.190,0.066,0.042,0.085,0.424,0.413,0.375,0.447,0.035,0.045,0.037,0.242,0.221,0.157,0.170,0.370,1.238,0.743,0.571,0.138,0.837,0.859,0.042,0.021,0.080,0.318,0.195,0.792,1.581,1.058,2.004,1.512,2.273,1.256,0.036,0.005,0.094,0.091,0.464,0.741";
+                                     "GATGTGAAATCCCCGGGCTCAACCTGGGAACTGCATCTGATACTGGCAAGCTTGAGTCTCGTAGAGGGGGGTAGAATTCCAGGTGTAGCGGTGAAATGCGTAGAGATCTGGAGGAATACCGGTGGCGAAGGCGGCCCCCTGGACGAAGACTGACGCTCAGGTGCGAAAGCGTGGGGAGCAAACAGGATTAGATACCCTGG\n" +
+                                     "0.052,0.046,0.108,0.241,0.221,1.224,0.246,0.846,1.505,0.627,0.078,0.002,0.056,0.317,0.114,0.157,0.264,1.016,2.925,2.205,1.075,1.210,0.191,0.016,0.045,0.015,0.087,0.572,0.052,0.157,0.796,2.724,0.027,0.000,0.000,0.000,0.000,0.000,0.004,0.003,0.063,0.144,0.072,0.054,0.096,0.112,0.002,0.000,0.019,0.026,0.021,1.022,2.108,0.111,0.000,0.007,0.000,0.002,0.000,0.010,0.037,0.078,0.152,0.355,1.738,0.715,0.211,0.179,0.036,0.046,0.159,0.257,0.312,0.931,0.798,0.618,0.935,0.147,0.015,0.014,0.031,0.147,0.149,0.577,1.052,1.410,0.487,0.636,0.238,0.286,0.462,1.586,1.683,0.597,1.165,1.265,2.094,0.422,0.462,1.900,4.055,0.481,0.511,0.087,1.217,1.180,0.094,0.018,0.033,0.081,0.148,0.163,0.160,1.019,0.339,0.507,1.039,0.824,0.122,0.420,0.429,0.913,1.383,0.610,0.417,0.825,0.743,0.433,0.401,0.993,0.497,0.404,0.407,0.316,0.017,0.005,0.046,0.072,0.037,0.091,0.282,0.203,0.033,0.004,0.021,0.262,0.157,0.050,0.019,0.059,0.102,0.083,0.066,0.040,0.075,0.061,0.573,0.631,0.427,0.265,1.190,0.066,0.042,0.085,0.424,0.413,0.375,0.447,0.035,0.045,0.037,0.242,0.221,0.157,0.170,0.370,1.238,0.743,0.571,0.138,0.837,0.859,0.042,0.021,0.080,0.318,0.195,0.792,1.581,1.058,2.004,1.512,2.273,1.256,0.036,0.005,0.094,0.091,0.464,0.741";
                     $('#query').val(sampleData);
                 });
             
@@ -369,17 +369,164 @@
                 updateDatabaseOptions();
             
                 $('#shapewarp-form').submit(function(event) {
-               // Validate file input and query textarea
-                   var fileInput = $('#fileInput');
-                   var queryTextarea = $('#query');
             
-                   if (!fileInput.val() && !queryTextarea.val()) {
-                       // If both file input and query textarea are empty, prevent form submission
-                       event.preventDefault();
-            
-                       // Show error message in a small div
-                       showError('Please specify a query');
-                   }
+                    if (!$('#fileInput').val() && !$('#query').val()) {
+                        event.preventDefault();
+                        showError('Please specify a query');
+                    }
+                    
+                    if (!$.isNumeric($('#inclusion-evalue').val()) || $('#inclusion-evalue').val() < 0) {
+                        event.preventDefault();
+                        showError('Inclusion E-value must be &ge; 0');
+                    }
+
+                    if (!$.isNumeric($('#report-evalue').val()) || $('#report-evalue').val() < 0) {
+                        event.preventDefault();
+                        showError('Report E-value must be &ge; 0');
+                    }
+
+                    if ($('#report-evalue').val() < $('#inclusion-evalue').val()) {
+                        event.preventDefault();
+                        showError('Report E-value must be &ge; inclusion E-value');
+                    }
+
+                    if (!$.isNumeric($('#max-reactivity').val()) || $('#max-reactivity').val() <= 0) {
+                        event.preventDefault();
+                        showError('Max reactivity must be &gt; 0');
+                    }
+
+                    if (!$.isNumeric($('#max-align-overlap').val()) || $('#max-align-overlap').val() < 0 || $('#max-align-overlap').val() > 1) {
+                        event.preventDefault();
+                        showError('Max alignment overlap must be comprised between 0 and 1');
+                    }
+
+                    if (!$.isNumeric($('#null-hsgs').val()) || Math.floor($('#null-hsgs').val()) != $('#null-hsgs').val() || $('#null-hsgs').val() < 100) {
+                        event.preventDefault();
+                        showError('Null HSGs must be an INT &ge; 100');
+                    }
+
+                    if (!$.isNumeric($('#min-kmers').val()) || Math.floor($('#min-kmers').val()) != $('#min-kmers').val() || $('#min-kmers').val() < 1) {
+                        event.preventDefault();
+                        showError('Min kmers must be an INT &ge; 1');
+                    }
+
+                    if (!$.isNumeric($('#max-kmer-dist').val()) || Math.floor($('#max-kmer-dist').val()) != $('#max-kmer-dist').val() || $('#max-kmer-dist').val() < 1) {
+                        event.preventDefault();
+                        showError('Max kmer distance must be an INT &ge; 1');
+                    }
+
+                    if (!$.isNumeric($('#kmer-len').val()) || Math.floor($('#kmer-len').val()) != $('#kmer-len').val() || $('#kmer-len').val() < 6) {
+                        event.preventDefault();
+                        showError('Kmer length must be an INT &ge; 6');
+                    }
+
+                    if (!$.isNumeric($('#kmer-offset').val()) || Math.floor($('#kmer-offset').val()) != $('#kmer-offset').val() || $('#kmer-offset').val() < 1) {
+                        event.preventDefault();
+                        showError('Kmer offset must be an INT &ge; 1');
+                    }
+
+                    if ($('#kmer-max-gc-diff').val().toLowerCase() !== 'auto' && (!$.isNumeric($('#kmer-max-gc-diff').val()) || $('#kmer-max-gc-diff').val() <= 0)) {
+                        event.preventDefault();
+                        showError('Kmer max GC difference must be &gt; 0');
+                    }
+
+                    if (!$.isNumeric($('#kmer-max-seq-dist').val()) || $('#kmer-max-seq-dist').val() < 0) {
+                        event.preventDefault();
+                        showError('Kmer max sequence distance must be &ge; 0');
+                    }
+
+                    if (!$.isNumeric($('#kmer-min-complexity').val()) || $('#kmer-min-complexity').val() <= 0) {
+                        event.preventDefault();
+                        showError('Min kmer complexity must be &gt; 0');
+                    }
+
+                    if (!$.isNumeric($('#kmer-max-match-every-nt').val()) || $('#kmer-max-match-every-nt').val() <= 0) {
+                        event.preventDefault();
+                        showError('Kmer max match every nt must be &gt; 0');
+                    }
+
+                    var valuePair = $('#align-match-score').split(',').map(function (item) {
+                        return item.trim();
+                    });
+
+                    if (valuePair.length !== 2 || !$.isNumeric(valuePair[0]) || !$.isNumeric(valuePair[1])) {
+                        event.preventDefault();
+                        showError('Match score must be a comma-separated list of 2 values');
+                    }
+
+                    valuePair = $('#align-mismatch-score').split(',').map(function (item) {
+                        return item.trim();
+                    });
+
+                    if (valuePair.length !== 2 || !$.isNumeric(valuePair[0]) || !$.isNumeric(valuePair[1])) {
+                        event.preventDefault();
+                        showError('Mismatch score must be a comma-separated list of 2 values');
+                    }
+
+                    if (!$.isNumeric($('#align-gap-open-penalty').val())) {
+                        event.preventDefault();
+                        showError('Gap open penalty must be numeric');
+                    }
+
+                    if (!$.isNumeric($('#align-gap-ext-penalty').val())) {
+                        event.preventDefault();
+                        showError('Gap extension penalty must be numeric');
+                    }
+
+                    if (!$.isNumeric($('#align-max-drop-off-rate').val()) || $('#align-max-drop-off-rate').val() < 0 || $('#align-max-drop-off-rate').val() > 1) {
+                        event.preventDefault();
+                        showError('Max drop-off rate must be comprised between 0 and 1');
+                    }
+
+                    if (!$.isNumeric($('#align-max-drop-off-bases').val()) || Math.floor($('#align-max-drop-off-bases').val()) != $('#align-max-drop-off-bases').val() || $('#kmer-offset').val() < 0) {
+                        event.preventDefault();
+                        showError('Max drop-off bases must be an INT &ge; 0');
+                    }
+
+                    if (!$.isNumeric($('#align-len-tolerance').val()) || $('#align-len-tolerance').val() < 0 || $('#align-len-tolerance').val() > 1) {
+                        event.preventDefault();
+                        showError('Length difference tolerance must be comprised between 0 and 1');
+                    }
+
+                    if (!$.isNumeric($('#align-seq-match-score').val())) {
+                        event.preventDefault();
+                        showError('Sequence match score must be numeric');
+                    }
+
+                    if (!$.isNumeric($('#align-seq-mismatch-score').val())) {
+                        event.preventDefault();
+                        showError('Sequence mismatch score must be numeric');
+                    }
+
+                    if ($('#eval-align-fold').prop('checked')) {
+
+                        if (!$.isNumeric($('#shufflings').val()) || Math.floor($('#shufflings').val()) != $('#shufflings').val() || $('#shufflings').val() < 10) {
+                            event.preventDefault();
+                            showError('Shufflings must be an INT &ge; 10');
+                        }
+
+                        if (!$.isNumeric($('#block-size').val()) || Math.floor($('#block-size').val()) != $('#block-size').val() || $('#block-size').val() < 1) {
+                            event.preventDefault();
+                            showError('Block size must be an INT &ge; 1');
+                        }
+
+                        if (!$.isNumeric($('#min-bp-support').val()) || $('#min-bp-support').val() < 0 || $('#min-bp-support').val() > 1) {
+                            event.preventDefault();
+                            showError('Min base-pair support must be comprised between 0 and 1');
+                        }
+
+                        if (!$.isNumeric($('#max-bp-span').val()) || Math.floor($('#max-bp-span').val()) != $('#max-bp-span').val() || $('#max-bp-span').val() < 10) {
+                            event.preventDefault();
+                            showError('Max base-pair span must be an INT &ge; 10');
+                        }
+
+                        if (!$.isNumeric($('#align-fold-pvalue').val()) || $('#align-fold-pvalue').val() < 0 || $('#align-fold-pvalue').val() > 1) {
+                            event.preventDefault();
+                            showError('Folding free-energy p-value must be comprised between 0 and 1');
+                        }
+
+                    }
+
                });
             
                // Add change event listener to update file name display
