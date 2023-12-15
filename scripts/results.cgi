@@ -87,7 +87,7 @@ HTML
         my ($pid);
         ($pid) = $jobId =~ m/^[a-z0-9]+-(\d+)$/i;
 
-        if (-e "../results/$jobId/results.out") {
+        if (-e "../results/$jobId/done.out") {
 
             if (!getLineCount("../results/$jobId/results.out")) {
 
@@ -317,6 +317,7 @@ $plotData
             footer.mouseenter(function () {
                 footer.hide();
             });
+        });
 HTML
 
 }
@@ -324,17 +325,16 @@ HTML
 if (defined $newUrl) {
 
     print <<HTML;
-
+        \$(document).ready(function(){
             setTimeout(function() {
                 window.location.href = "$newUrl";
             }, 0);
-
+        });
 HTML
 
 }
 
 print <<HTML;
-        });
     </script>
     </body>
 </html>

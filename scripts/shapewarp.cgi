@@ -222,6 +222,15 @@ else {
     }
     else {
 
+        my $pid = (split /-/, $jobId)[1];
+
+        if (!defined $pid || !isint($pid) || !kill(0, $pid)) {
+
+            $newUrl = "results.cgi?jobId=$jobId";
+            $msDelay = 0;
+
+        }
+
         print <<HTML;
                 <p>
                     This page will automatically refresh every <strong>$nSec</strong> seconds.
