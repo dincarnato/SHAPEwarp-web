@@ -111,6 +111,16 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-section">
+                                    <label for="kmer-min-complexity">Min kmer complexity:</label>
+                                    <input type="text" id="kmer-min-complexity" name="kmer-min-complexity" value="0.3">
+                                </div>
+                                <div class="form-section">
+                                    <label for="kmer-max-match-every-nt">Kmer max match every nt:</label>
+                                    <input type="text" id="kmer-max-match-every-nt" name="kmer-max-match-every-nt" value="200">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-section">
                                     <label for="kmer-max-gc-diff">Kmer max GC difference:</label>
                                     <input type="text" id="kmer-max-gc-diff" name="kmer-max-gc-diff" value="auto">
                                 </div>
@@ -127,16 +137,6 @@
                                 <div class="form-section checkbox-section">
                                     <input type="checkbox" id="match-kmer-seq" name="match-kmer-seq">
                                     <label for="match-kmer-seq" class="checkbox-label">Match kmer sequence</label>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-section">
-                                    <label for="kmer-min-complexity">Min kmer complexity:</label>
-                                    <input type="text" id="kmer-min-complexity" name="kmer-min-complexity" value="0.3">
-                                </div>
-                                <div class="form-section">
-                                    <label for="kmer-max-match-every-nt">Kmer max match every nt:</label>
-                                    <input type="text" id="kmer-max-match-every-nt" name="kmer-max-match-every-nt" value="200">
                                 </div>
                             </div>
                         </div>
@@ -176,11 +176,11 @@
                             <div class="form-row">
                                 <div class="form-section">
                                     <label for="align-seq-match-score">Sequence match score:</label>
-                                    <input type="text" id="align-seq-match-score" name="kalign-seq-match-score" value="0.5">
+                                    <input type="text" id="align-seq-match-score" name="align-seq-match-score" value="0.5">
                                 </div>
                                 <div class="form-section">
                                     <label for="align-seq-mismatch-score">Sequence mismatch score:</label>
-                                    <input type="text" id="align-seq-mismatch-score" name="kalign-seq-mismatch-score" value="-2">
+                                    <input type="text" id="align-seq-mismatch-score" name="align-seq-mismatch-score" value="-2">
                                 </div>
                                 <div class="form-section checkbox-section">
                                     <input type="checkbox" id="align-score-seq" name="align-score-seq">
@@ -257,6 +257,11 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-section">
+                            <input type="submit" value="Submit" class="submit-btn">
+                            <input type="reset" value="Reset" class="reset-btn">
+                            <button type="button" id="toggleOptional2" onclick="toggleOptionalParameters()">Hide advanced parameters</button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -332,6 +337,7 @@
             function toggleOptionalParameters() {
                 var optionalParameters = $('#optional-parameters');
                 var button = $('#toggleOptional');
+                var button2 = $('#toggleOptional2');
             
                 // Toggle the display property based on the current state
                 var isVisible = optionalParameters.is(':visible');
@@ -339,6 +345,7 @@
             
                 // Update the button text based on the current state
                 button.text(isVisible ? 'Show advanced parameters' : 'Hide advanced parameters');
+                button2.text(isVisible ? 'Show advanced parameters' : 'Hide advanced parameters');
             
                 var footerHeight = $("footer").height();
                 var mainHeight = $("#main-content").height();
@@ -445,7 +452,7 @@
                         showError('Kmer max match every nt must be &gt; 0');
                     }
 
-                    var valuePair = $('#align-match-score').split(',').map(function (item) {
+                    var valuePair = $('#align-match-score').val().split(',').map(function (item) {
                         return item.trim();
                     });
 
@@ -454,7 +461,7 @@
                         showError('Match score must be a comma-separated list of 2 values');
                     }
 
-                    valuePair = $('#align-mismatch-score').split(',').map(function (item) {
+                    valuePair = $('#align-mismatch-score').val().split(',').map(function (item) {
                         return item.trim();
                     });
 

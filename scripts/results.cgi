@@ -4,15 +4,16 @@ use strict;
 use CGI;
 use JSON;
 
-use lib "/Users/danny/repos/RNAFramework/lib";
+use lib "/var/www/html/scripts/lib";
 
 use Core::Mathematics qw(:all);
 
 my ($cgi, $jobId, $newUrl, $maxAlnRowLen,
-    $plotData);
+    $maxSVGsize, $plotData);
 $cgi = CGI->new();
 $jobId = $cgi->param("jobId");
 $maxAlnRowLen = 60;
+$maxSVGsize = 500;
 
 print $cgi->header("text/html");
 
@@ -512,6 +513,7 @@ HTML
                                     <td>$dbSVG</td>
                                 </tr>
                             </table>
+                            <p style="text-align: right;">Structure plots generated using <a href="https://github.com/RNAcentral/R2DT" style="font-weight: bold;">R2DT</a></p>
 						</div>
 HTML
 
@@ -528,6 +530,24 @@ HTML
                                     <td class="detail-col-1">Reactivities (JSON):</td>
                                     <td><a href="../results/$jobId/reactivities/$baseName.json">$baseName.json</a></td>
                                 </tr>
+HTML
+
+                if ($hasStruct) {
+
+                    print <<HTML;
+                                <tr>
+                                    <td class="detail-col-1">Query structure plot (SVG):</td>
+                                    <td><a href="../results/$jobId/r2dt_out/results/json/svg/$baseName.query.svg">$baseName.query.svg</a></td>
+                                </tr>
+                                <tr>
+                                    <td class="detail-col-1">DB Entry structure plot (SVG):</td>
+                                    <td><a href="../results/$jobId/r2dt_out/results/json/svg/$baseName.db.svg">$baseName.db.svg</a></td>
+                                </tr>
+HTML
+
+                }
+
+                print <<HTML;
                             </table>
 						</div>
 HTML
@@ -701,18 +721,28 @@ sub importStructSVG {
 
     my ($baseName, $n) = @_;
 
-    my ($query, $db);
+    my ($query, $db, $width, $height);
 
-    open(my $fh, "<", "../results/$jobId/r2dt_out/results/final_svg/$baseName\_query.svg");
+    open(my $fh, "<", "../results/$jobId/r2dt_out/results/json/svg/$baseName\.query.svg");
     $query = do { local $/; <$fh> };
     close($fh);
 
-    open($fh, "<", "../results/$jobId/r2dt_out/results/final_svg/$baseName\_db.svg");
+    open($fh, "<", "../results/$jobId/r2dt_out/results/json/svg/$baseName\.db.svg");
     $db = do { local $/; <$fh> };
     close($fh);
 
     $query =~ s/<svg/<svg id="result$n-structure-query"/;
     $db =~ s/<svg/<svg id="result$n-structure-db"/;
+    $query =~ s/>x<\/text>/>-<\/text>/g;
+    $db =~ s/>x<\/text>/>-<\/text>/g;
+
+    ($width, $height) = $query =~ /width="(.+?)" height="(.+?)"/;
+    $width ||= $maxSVGsize;
+    $height ||= $maxSVGsize;
+    ($width, $height) = ($width > $height ? $maxSVGsize : $width / $height * $maxSVGsize, 
+                         $height > $width ? $maxSVGsize : $height / $width * $maxSVGsize);
+    $query =~ s/width=".+?" height=".+?"/width="$width" height="$height"/;
+    $db =~ s/width=".+?" height=".+?"/width="$width" height="$height"/;
 
     return($query, $db);
 
