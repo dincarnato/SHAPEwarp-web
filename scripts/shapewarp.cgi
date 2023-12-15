@@ -35,6 +35,7 @@ print <<HTML;
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>SHAPEwarp</title>
+      <link rel="shortcut icon" href="https://www.incarnatolab.com/favicon.ico" type="image/x-icon">
       <link rel="stylesheet" href="../css/styles.css">
       <link rel="stylesheet" href="../css/loader.css">
       <link href="https://fonts.googleapis.com/css?family=Merriweather:400,400i|Orbitron:900|Raleway:300,400,400i,600,700" rel="stylesheet">
@@ -187,13 +188,14 @@ HTML
                     makeR2dtInputFiles();
                     makeR2dtStructPlots();
 
-                    # Byproduct of r2dt
-                    # system("rm -R tests/");
-
                 }
 
                 unlink($stdout) if (!-s $stdout);
                 unlink($stderr) if (!-s $stderr);
+
+                open(my $wh, ">", $outDir . "done.out");
+                print $wh scalar(localtime());
+                close($wh);
 
                 exit();
 
@@ -212,8 +214,7 @@ HTML
 }
 else {
 
-    # Correct this to send to results (with right condition)
-    if (-e "../results/$jobId/results.out") {
+    if (-e "../results/$jobId/done.out") {
 
         $newUrl = "results.cgi?jobId=$jobId";
         $msDelay = 0;

@@ -24,6 +24,7 @@ print <<HTML;
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>SHAPEwarp</title>
+      <link rel="shortcut icon" href="https://www.incarnatolab.com/favicon.ico" type="image/x-icon">
       <link rel="stylesheet" href="../css/styles.css">
       <link href="https://fonts.googleapis.com/css?family=Merriweather:400,400i|Orbitron:900|Raleway:300,400,400i,600,700" rel="stylesheet">
       <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -105,11 +106,13 @@ HTML
             }
             else {
 
+                my $date = completionDate();
+
                 print <<HTML;
         <section id="main-content">
             <div class="container">
                 <section id="results">
-                    <p style="text-align: center; margin-bottom: 50px;">Results for Job ID: <strong>$jobId</strong></p>
+                    <p style="text-align: center; margin-bottom: 50px; line-height: 25px;">Results for Job ID: <strong>$jobId</strong><br/>[Completed on $date]</p>
                     <div id="result-container" class="result-container">
 HTML
 
@@ -602,7 +605,7 @@ sub importStockholm {
 
     my ($file, $html, $structure, $qStart, 
         $qEnd, $dStart, $dEnd, $qSeq,
-        $dSeq, %seq);
+        $dSeq, $maxPosLen, %seq);
     $file = "../results/$jobId/alignments/$baseName.sto";
     ($dStart, $dEnd, $qStart, $qEnd) = $baseName =~ /_(\d+)-(\d+)_.+?_(\d+)-(\d+)$/;
 
@@ -623,6 +626,7 @@ sub importStockholm {
 
     $qSeq = $seq{query};
     $dSeq = $seq{db};
+    $maxPosLen = max($dEnd, $qEnd);
 
     while(length($seq{query}) >= $maxAlnRowLen) {
 
@@ -669,8 +673,8 @@ sub importStockholm {
 
 sub alignPos {
 
-    my ($pos1, $pos2) = @_;
-    my $spaces = " " x (max(map { length($_) } ($pos1, $pos2)) - min(map { length($_) } ($pos1, $pos2)));
+    my ($pos1, $pos2, $maxLen) = @_;
+    my $spaces = " " x (max($maxLen, map { length($_) } ($pos1, $pos2)) - min(map { length($_) } ($pos1, $pos2)));
     
     if (length($pos1) > length($pos2)) { $pos2 .= $spaces; }
     else { $pos1 .= $spaces; }
@@ -802,5 +806,16 @@ sub hasStruct {
         }
 
     }
+    close($fh);
+
+}
+
+sub completionDate {
+
+    open(my $fh, "<", "../results/$jobId/done.out");
+    chomp(my $date = <$fh>);
+    close($fh);
+
+    return($date);
 
 }
