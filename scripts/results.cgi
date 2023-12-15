@@ -153,9 +153,7 @@ if (defined $plotData) {
       </section>
       <footer>
          <div class="container">
-            <a href="https://www.incarnatolab.com/">
-                <h1 class="page-title" style="font-size: 1.2rem;">INCA<span class="page-title2" style="font-size: 1.8rem;">RNA</span>TO lab</h1>
-            </a>
+            <h1 class="page-title" style="font-size: 1.2rem;">INCA<span class="page-title2" style="font-size: 1.8rem;">RNA</span>TO lab</h1>
          </div>
       </footer>
       <script>
@@ -268,7 +266,7 @@ $plotData
         
         \$(window).on('load', function() {
             
-            \$("#main-content").height(\$("#main-content").height() + 600);
+            //\$("#main-content").height(\$("#main-content").height() + 600);
             \$('.result-row').click(function() {
                 var rowId = \$(this).attr('id');
                 var detailsDivId = '#' + rowId + '-details';
@@ -304,6 +302,18 @@ $plotData
                 center: true
             });
         };
+
+        \$(document).ready(function(){
+            
+            var footer = \$('footer');
+
+            footer.mouseleave(function () {
+                footer.show();
+            });
+
+            footer.mouseenter(function () {
+                footer.hide();
+            });
 HTML
 
 }
@@ -311,16 +321,17 @@ HTML
 if (defined $newUrl) {
 
     print <<HTML;
-        \$(document).ready(function(){
+
             setTimeout(function() {
                 window.location.href = "$newUrl";
             }, 0);
-        });
+
 HTML
 
 }
 
 print <<HTML;
+        });
     </script>
     </body>
 </html>
