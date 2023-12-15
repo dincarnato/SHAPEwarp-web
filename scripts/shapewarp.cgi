@@ -224,7 +224,7 @@ else {
 
         my $pid = (split /-/, $jobId)[1];
 
-        if (!defined $pid || !isint($pid) || !kill(0, $pid)) {
+        if (!defined $pid || !isint($pid) || !-e "../results/$jobId/") {
 
             $newUrl = "results.cgi?jobId=$jobId";
             $msDelay = 0;

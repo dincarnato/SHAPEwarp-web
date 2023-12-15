@@ -149,9 +149,7 @@ HTML
 
 }
 
-if (defined $plotData) {
-
-    print <<HTML;
+print <<HTML;
         </div>
       </section>
       <footer>
@@ -160,6 +158,11 @@ if (defined $plotData) {
          </div>
       </footer>
       <script>
+HTML
+
+if (defined $plotData) {
+
+    print <<HTML;
 
         var lastClickedTabId = null;
         var lastClickedRowId = null;
