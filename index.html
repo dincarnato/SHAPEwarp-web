@@ -46,9 +46,9 @@
                             <div class="form-section">
                                 <label for="category">Category:</label>
                                 <select id="category" name="category" onchange="updateDatabaseOptions()" required>
-                                    <option value="bacteria">Bacteria</option>
                                     <option value="mammal">Mammals</option>
                                     <option value="virus">Viruses</option>
+                                    <option value="other" selected="selected">Other</option>
                                 </select>
                             </div>
                             <div class="form-section">
@@ -269,6 +269,7 @@
         </section>
         <footer>
             <div class="container">
+                <span style="float: left; margin-top: 10px;">SHAPEwarp is a <strong>free &amp; open-source</strong> software.</span>
                 <a href="https://www.incarnatolab.com/">
                     <h1 class="page-title" style="font-size: 1.2rem;">INCA<span class="page-title2" style="font-size: 1.8rem;">RNA</span>TO lab</h1>
                 </a>
@@ -276,31 +277,31 @@
         </footer>
         <script>
             function updateDatabaseOptions() {
-                // Get the selected category
-                var selectedCategory = $("#category").val();
                 
-                // Simulate dynamic data based on the selected category
+                var selectedCategory = $("#category").val();
+
                 var databaseOptions = [];
                 if (selectedCategory === "mammal") {
                     databaseOptions = [
-                        { text: "HEK293, polyA+ (NAI-N3, Sun et al., 2021)", value: "HE293_NAIN3_Sun2021" },
-                        { text: "HeLa, polyA+ (NAI-N3, Sun et al., 2021)", value: "HeLa_NAIN3_Sun2021" },
-                        { text: "HepG2, polyA+ (NAI-N3, Sun et al., 2021)", value: "HepG2_NAIN3_Sun2021" },
-                        { text: "H9 hESC, polyA+ (NAI-N3, Sun et al., 2021)", value: "H9_NAIN3_Sun2021" },
-                        { text: "K562, polyA+ (NAI-N3, Sun et al., 2021)", value: "K562_NAIN3_Sun2021" },
-                        { text: "E14 mES, polyA+ (NAI-N3, Sun et al., 2021)", value: "mES_NAIN3_Sun2021" }
+                        { text: "HEK293, in vivo, polyA+ (NAI-N3, Sun et al., 2021)", value: "HEK293_NAIN3_invivo_Sun2021" },
+                        { text: "HeLa, in vivo, polyA+ (NAI-N3, Sun et al., 2021)", value: "HeLa_NAIN3_invivo_Sun2021" },
+                        { text: "HepG2, in vivo, polyA+ (NAI-N3, Sun et al., 2021)", value: "HepG2_NAIN3_invivo_Sun2021" },
+                        { text: "H9 hESC, in vivo, polyA+ (NAI-N3, Sun et al., 2021)", value: "H9_NAIN3_invivo_Sun2021" },
+                        { text: "K562, in vivo, polyA+ (NAI-N3, Sun et al., 2021)", value: "K562_NAIN3_invivo_Sun2021" },
+                        { text: "E14 mES, in vivo, polyA+ (NAI-N3, Sun et al., 2021)", value: "mES_NAIN3_invivo_Sun2021" }
                     ];
                 } else if (selectedCategory === "virus") {
                     databaseOptions = [
+                        { text: "ZIKA, Asian strain, in vivo (NAI-N3, Li et al., 2018)", value: "ZIKV_Asian_NAIN3_invivo_Li2018" },
+                        { text: "ZIKA, African strain, in vivo (NAI-N3, Li et al., 2018)", value: "ZIKV_African_NAIN3_invivo_Li2018" },
                         { text: "SARS-CoV-2, in vivo (NAI, Manfredonia et al., 2020)", value: "SARS2_NAI_invivo_Manfredonia2020" },
                         { text: "SARS-CoV-2, in vitro (NAI, Manfredonia et al., 2020)", value: "SARS2_NAI_invitro_Manfredonia2020" },
                         { text: "SARS-CoV-2, in vitro (2A3, Morandi et al., 2022)", value: "SARS2_2A3_invitro_Morandi2022" },
                         { text: "SARS-CoV, in vitro (2A3, Morandi et al., 2022)", value: "SARS_2A3_invitro_Morandi2022" }
                     ];
-                } else if (selectedCategory === "bacteria") {
+                } else if (selectedCategory === "other") {
                     databaseOptions = [
-                        { text: "E. coli, rRNA, in vivo (2A3, Marinus et al., 2021)", value: "Ecoli_rRNA_2A3_invivo_Marinus2021" },
-                        { text: "B. subtilis, rRNA, in vivo (2A3, Marinus et al., 2021)", value: "Bsubtilis_rRNA_2A3_invivo_Marinus2021" }
+                        { text: "rRNAs (multiple species), in vivo (2A3, Marinus et al., 2021)", value: "rRNAs_2A3_invivo_Marinus2021" }
                     ];
                 }
             
@@ -448,9 +449,9 @@
                         showError('Min kmer complexity must be &gt; 0');
                     }
 
-                    if (!$.isNumeric($('#kmer-max-match-every-nt').val()) || $('#kmer-max-match-every-nt').val() <= 0) {
+                    if (!$.isNumeric($('#kmer-max-match-every-nt').val()) || $('#kmer-max-match-every-nt').val() < 0) {
                         event.preventDefault();
-                        showError('Kmer max match every nt must be &gt; 0');
+                        showError('Kmer max match every nt must be &ge; 0');
                     }
 
                     var valuePair = $('#align-match-score').val().split(',').map(function (item) {

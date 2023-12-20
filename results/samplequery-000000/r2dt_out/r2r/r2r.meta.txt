@@ -1,0 +1,1 @@
+../results/BPw0X2UZp1JxKv8w-2683338/r2dt_out/r2r/r2r-input.gsc.sto.txt	oneseq	input

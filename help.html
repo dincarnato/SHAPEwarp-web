@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SHAPEwarp</title>
+        <link rel="shortcut icon" href="https://www.incarnatolab.com/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="css/styles.css">
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,400i|Orbitron:900|Raleway:300,400,400i,600,700" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    </head>
+    <body>
+        <div id="menu-bar" class="menu-bar">
+            <div class="container">
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Submit a job</a></li>
+                        <li><a href="https://github.com/dincarnato/SHAPEwarp/">Standalone</a></li>
+                        <li><a href="help.html">Help</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <header>
+            <div class="container">
+                <h1 class="page-title"><span class="page-title2">SHAPE</span>WARP</h1>
+            </div>
+        </header>
+        <section id="main-content">
+            <div class="container">
+                <h1 class="content-title">What is SHAPEwarp?</h1>
+                <p>
+                    <strong>SHAPEwarp</strong> is a sequence-agnostic method for the identification of structurally-similar 
+                    RNA elements in a database of SHAPE (Selective 2&prime;-hydroxyl acylation analyzed by primer extension) chemical 
+                    probing-derived reactivity profiles.
+                    The approach used by SHAPEwarp is inspired by the <a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi">BLAST</a> 
+                    algorithm and builds on top of two widely used methods for similarity search in time series data: Mueen's 
+                    Algorithm for Similarity Search (<a href="https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html">MASS</a>) 
+                    and dynamic time warping (<a href="https://en.wikipedia.org/wiki/Dynamic_time_warping">DTW</a>).
+                </p>
+                <p>
+                    For a complete description of the algorithm, please refer to the original publication:<br/><br/>
+                    <a style="text-decoration: none;" href="https://www.nature.com/articles/s41467-022-29398-y">Edoardo Morandi, Martijn J. van Hemert &amp; Danny Incarnato (2022) <strong>SHAPE-guided RNA structure homology search and motif discovery</strong> (Nat. Commun.)</a>
+                </p>
+                <br/>
+                <h1 class="content-title">How does SHAPEwarp work?</h1>
+                <p>
+                    SHAPEwarp takes a user-provided query, consisting of an RNA sequence and a corresponding set of SHAPE reactivities,
+                    and searches it against a database of SHAPE reactivity profiles.<br/>
+                    A query is composed of 3 lines, respectively containing:
+                </p>
+                <p>
+                    <ol>
+                        <li>Unique query ID</li> 
+                        <li>Sequence</li> 
+                        <li>Comma-separated list of SHAPE reactivities</li> 
+                    </ol>
+                </p>
+                <p>Below you can see an example:</p>
+                <p>
+                    <pre>Ecoli_16S
+GATGTGAAATCCCCGGGCTCAACCTGGGAACTGCATCTGATACTGGCAAGCTTGAGTCTCGTAGAGGGGGGTAGAATTCCAGGTGTAGCGGTGAAATGCGTAGAGATCTGGAGGAATACCGGTGGCGAAGGCGGCCCCCTGGACGAAGACTGACGCTCAGGTGCGAAAGCGTGGGGAGCAAACAGGATTAGATACCCTGG
+0.052,0.046,0.108,0.241,0.221,1.224,0.246,0.846,1.505,0.627,0.078,0.002,0.056,0.317,0.114,0.157,0.264,1.016,2.925,2.205,1.075,1.210,0.191,0.016,0.045,0.015,0.087,0.572,0.052,0.157,0.796,2.724,0.027,0.000,0.000,0.000,0.000,0.000,0.004,0.003,0.063,0.144,0.072,0.054,0.096,0.112,0.002,0.000,0.019,0.026,0.021,1.022,2.108,0.111,0.000,0.007,0.000,0.002,0.000,0.010,0.037,0.078,0.152,0.355,1.738,0.715,0.211,0.179,0.036,0.046,0.159,0.257,0.312,0.931,0.798,0.618,0.935,0.147,0.015,0.014,0.031,0.147,0.149,0.577,1.052,1.410,0.487,0.636,0.238,0.286,0.462,1.586,1.683,0.597,1.165,1.265,2.094,0.422,0.462,1.900,4.055,0.481,0.511,0.087,1.217,1.180,0.094,0.018,0.033,0.081,0.148,0.163,0.160,1.019,0.339,0.507,1.039,0.824,0.122,0.420,0.429,0.913,1.383,0.610,0.417,0.825,0.743,0.433,0.401,0.993,0.497,0.404,0.407,0.316,0.017,0.005,0.046,0.072,0.037,0.091,0.282,0.203,0.033,0.004,0.021,0.262,0.157,0.050,0.019,0.059,0.102,0.083,0.066,0.040,0.075,0.061,0.573,0.631,0.427,0.265,1.190,0.066,0.042,0.085,0.424,0.413,0.375,0.447,0.035,0.045,0.037,0.242,0.221,0.157,0.170,0.370,1.238,0.743,0.571,0.138,0.837,0.859,0.042,0.021,0.080,0.318,0.195,0.792,1.581,1.058,2.004,1.512,2.273,1.256,0.036,0.005,0.094,0.091,0.464,0.741</pre>
+                </p>
+                <p>
+                    Multiple queries can be simultaneously searched against a database.<br/>
+                    The webserver has the following limits:
+                </p>
+                <p>
+                    <ul>
+                        <li>Each individual query cannot exceed <strong>300 nucelotides</strong></li> 
+                        <li>The sum of all queries cannot exceed <strong>3,000 nucleotides</strong></li> 
+                    </ul>
+                </p>
+                <p>
+                    To perform a test run, just click on "<strong>Submit a job</strong>" in the top menu, then click on 
+                    "<strong>Load sample query</strong>", then click "<strong>Submit</strong>" (see below):
+                    <br/><br/>
+                    <img src="images/test_run.png" alt="Test run"/>
+                </p>
+                <br/>
+                <h1 class="content-title">SHAPEwarp results</h1>
+                <p>
+                    SHAPEwarp will return a table containing the list of all the significant matches (so, the matches within the user-defined 
+                    <strong>inclusion E-value</strong> threshold). These results will be marked by a "<strong>!</strong>" under the "<strong>Significance</strong>" 
+                    column. If a <strong>report E-value</strong> higher than the inclusion E-value was specified, matches above the inclusion E-value threshold, 
+                    but below the report E-value threshold, will also be reported, marked by a "<strong>?</strong>" and colored in red.
+                </p>
+                <p>
+                    A <a href="scripts/results.cgi?jobId=samplequery-000000">sample SHAPEwarp output</a> is depicted in picture below:
+                    <br/><br/>
+                    <img src="images/sample_results.png" alt="Sample results"/>
+                    <br/>
+                    By clicking on each result, a detailed overview of the specific match will be shown:
+                    <br/><br/>
+                    <img src="images/sample_result_expanded.png" alt="Sample result expanded"/>
+                    <br/>
+                    Four (or five, depending on whether the "<strong>Evaluate alignment folding</strong>" option was enabled) tabs will be available:
+                </p>
+                <p>
+                    <ul>
+                        <li><strong>Details.</strong> A detailed summary of the specific match</li>
+                        <li><strong>Alignment.</strong> The sequence alignment between the query and the database match</li>
+                        <li><strong>Reactivity plot.</strong> Plot depicting the aligned SHAPE reactivity profiles between the query and the database match</li>
+                        <li><strong>Structure.</strong> Plot of the consensus structure as derived by <a href="https://pubmed.ncbi.nlm.nih.gov/17993696/">RNAalifold</a>, colored either by the query or database match SHAPE reactivities (<i>Note: structure plot generation requires the "<strong>Evaluate alignment folding</strong>" option to be enabed</i>) </li>
+                        <li><strong>Downloads.</strong> Links to download the aligned sequences and reactivity profiles (as well as the structure plots, when present) for the query and the database match</li>
+                    </ul>
+                </p>
+                <br/>
+                <h1 class="content-title">Available databases</h1>
+                <p>
+                    SHAPEwarp provides a number of high-quality SHAPE reactivity databases. Additional databases will be added over time. If you want to request the addition of a specific database, please <a href="mailto:dincarnato[at]incarnatolab.com">contact us</a>.
+                </p>
+                <p>
+                    <ul>
+                        <li><strong>Mammals</strong></li>
+                        <ul>
+                            <li>
+                                <i>Sun et al.</i>, 2021. <a href="https://pubmed.ncbi.nlm.nih.gov/33623109/"><strong>Predicting dynamic cellular protein-RNA interactions by deep learning using in vivo RNA structures.</strong></a> (Cell Res.)<br/>
+                                <strong>RNA class:</strong> PolyA+<br/>
+                                <strong>Reagent:</strong> NAI-N3<br/>
+                                <strong>Library strategy:</strong> icSHAPE<br/>
+                                <strong>Condition:</strong> <i>in vivo</i><br/>
+                                <strong>Dataset(s):</strong> Homo sapiens (HEK293, HeLa, HepG2, H9 hESC, K562); Mus musculus (mES)
+                            </li>
+                        </ul>
+                        <br/>
+                        <li><strong>Viruses</strong></li>
+                        <ul>
+                            <li>
+                                <i>Li et al.</i>, 2018. <a href="https://pubmed.ncbi.nlm.nih.gov/30472207/"><strong>Integrative Analysis of Zika Virus Genome RNA Structure Reveals Critical Determinants of Viral Infectivity.</strong></a> (Cell Host Microbe.)<br/>
+                                <strong>RNA class:</strong> gRNA<br/>
+                                <strong>Reagent:</strong> NAI-N3<br/>
+                                <strong>Library strategy:</strong> icSHAPE<br/>
+                                <strong>Condition:</strong> <i>in vivo</i><br/>
+                                <strong>Dataset(s):</strong> Zika virus (Asian and African strains)
+                            </li>
+                            <br/>
+                            <li>
+                                <i>Manfredonia et al.</i>, 2020. <a href="https://pubmed.ncbi.nlm.nih.gov/33166999/"><strong>Genome-wide mapping of SARS-CoV-2 RNA structures identifies therapeutically-relevant elements.</strong></a> (Nucleic Acids Res.)<br/>
+                                <strong>RNA class:</strong> gRNA<br/>
+                                <strong>Reagent:</strong> NAI<br/>
+                                <strong>Library strategy:</strong> SHAPE-MaP<br/>
+                                <strong>Condition:</strong> <i>in vivo</i> &amp; <i>in vitro</i><br/>
+                                <strong>Dataset(s):</strong> SARS-CoV-2
+                            </li>
+                            <br/>
+                            <li>
+                                <i>Morandi et al.</i>, 2022. <a href="https://pubmed.ncbi.nlm.nih.gov/35361788/"><strong>SHAPE-guided RNA structure homology search and motif discovery.</strong></a> (Nat. Commun.)<br/>
+                                <strong>RNA class:</strong> gRNA<br/>
+                                <strong>Reagent:</strong> 2A3<br/>
+                                <strong>Library strategy:</strong> SHAPE-MaP<br/>
+                                <strong>Condition:</strong> <i>in vitro</i><br/>
+                                <strong>Dataset(s):</strong> SARS-CoV; SARS-CoV-2
+                            </li>
+                        </ul>
+                        <br/>
+                        <li><strong>Other</strong></li>
+                        <ul>
+                            <li>
+                                <i>Marinus et al.</i>, 2021. <a href="https://pubmed.ncbi.nlm.nih.gov/33398343/"><strong>A novel SHAPE reagent enables the analysis of RNA structure in living cells with unprecedented accuracy.</strong></a> (Nucleic Acids Res.)<br/>
+                                <strong>RNA class:</strong> rRNA<br/>
+                                <strong>Reagent:</strong> 2A3<br/>
+                                <strong>Library strategy:</strong> SHAPE-MaP<br/>
+                                <strong>Condition:</strong> <i>in vivo</i><br/>
+                                <strong>Dataset(s):</strong> Escherichia coli; Bacillus subtilis; Saccharomyces cerevisiae; Homo sapiens (HEK293)
+                            </li>
+                        </ul>
+                    </ul>
+                </p>
+                <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+            </div>
+        </section>
+        <footer>
+            <div class="container">
+                <a href="https://www.incarnatolab.com/">
+                    <h1 class="page-title" style="font-size: 1.2rem;">INCA<span class="page-title2" style="font-size: 1.8rem;">RNA</span>TO lab</h1>
+                </a>
+            </div>
+        </footer>
+    </body>
+</html>

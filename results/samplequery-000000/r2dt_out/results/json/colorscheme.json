@@ -1,0 +1,13 @@
+{
+    "coloring": {
+        "shape_reactivity": {
+            "label": "Reactivity",
+            "values": {
+                "nan": "rgb(180, 180, 180)",
+                "0": "rgb(0, 0, 0)",
+                "0.5": "rgb(255, 199, 9)",
+                "1": "rgb(143, 26, 31)"
+            }
+        }
+    }
+}

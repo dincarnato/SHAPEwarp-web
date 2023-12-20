@@ -4,12 +4,12 @@ use strict;
 use CGI;
 use JSON;
 
-use lib "/var/www/html/scripts/lib";
+use lib "/var/www/html/shapewarp/scripts/lib";
 
 use Core::Mathematics qw(:all);
 
 my ($cgi, $jobId, $newUrl, $maxAlnRowLen,
-    $maxSVGsize, $plotData);
+    $maxSVGsize, $plotData, $gotResults);
 $cgi = CGI->new();
 $jobId = $cgi->param("jobId");
 $maxAlnRowLen = 60;
@@ -112,11 +112,12 @@ HTML
         <section id="main-content">
             <div class="container">
                 <section id="results">
-                    <p style="text-align: center; margin-bottom: 50px; line-height: 25px;">Results for Job ID: <strong>$jobId</strong><br/>[Completed on $date]</p>
+                    <p style="text-align: center; margin-bottom: 50px; line-height: 25px;">Results for Job ID: <strong>$jobId</strong><br/>[Completed on: $date]</p>
                     <div id="result-container" class="result-container">
 HTML
 
                 resultsToTable();
+                $gotResults = 1;
 
             }
 
@@ -160,7 +161,7 @@ print <<HTML;
       <script>
 HTML
 
-if (defined $plotData) {
+if (defined $gotResults) {
 
     print <<HTML;
 
@@ -225,18 +226,18 @@ $plotData
                             x: 0,
                             y: 1.2,
                             font: {
-                                size: 14,
+                                size: 12,
                                 color: 'black'
                             }
                         }, {
-                            text: 'DB Entry',
+                            text: 'Match',
                             showarrow: false,
                             xref: 'paper',
                             yref: 'paper',
                             x: 0,
                             y: 0.48,
                             font: {
-                                size: 14,
+                                size: 12,
                                 color: 'black'
                             }
                         }]    
@@ -263,8 +264,8 @@ $plotData
 
                 }
                 
-                //\$("#main-content").height(\$("#main-content").height() + \$("#" + tabId + "-content").height() - \$("#" + lastClickedTabId + "-content").height());
-        
+                \$("#main-content").height(\$("#main-content").height() + (\$("footer").height() * 4));
+                
                 lastClickedTabId = tabId;
 
             });
@@ -272,7 +273,6 @@ $plotData
         
         \$(window).on('load', function() {
             
-            //\$("#main-content").height(\$("#main-content").height() + 600);
             \$('.result-row').click(function() {
                 var rowId = \$(this).attr('id');
                 var detailsDivId = '#' + rowId + '-details';
@@ -311,6 +311,8 @@ $plotData
 
         \$(document).ready(function(){
             
+            \$("#main-content").height(\$("#main-content").height() + (\$("footer").height() * 4));
+
             var footer = \$('footer');
 
             footer.mouseleave(function () {
@@ -361,8 +363,9 @@ sub resultsToTable {
             print <<HTML;
                     <div class="result-row header-row">
                         <div class="result-col">Query</div>
-                        <div class="result-col">DB Entry ID</div>
-                        <div class="result-col">DB Entry Accession</div>
+                        <div class="result-col">Match ID</div>
+                        <div class="result-col">Match Accession</div>
+                        <div class="result-col">Match Organism</div>
                         <div class="result-col">Score</div>
                         <div class="result-col">P-value</div>
                         <div class="result-col">E-value</div>
@@ -373,21 +376,20 @@ HTML
         }
         else {
 
-            my ($type, $id, $accession, $baseName,
-                $aln, $qSeq, $dSeq, @row);
+            my ($type, $id, $organism, $accession, 
+                $baseName, $aln, $qSeq, $dSeq, @row);
             $n++;
             @row = split /\t/;
             $baseName = join("_", $row[1], join("-", @row[4,5]), $row[0], join("-", @row[2,3]));
             $_ = formatValue($_) for (@row[8..10]);
-            ($accession, $id) = split /_/, $row[1];
-            $accession = accessionToLink($accession);
-            $type = $row[-1] eq "?" ? "non-signif" : ($n % 2 ? "odd" : "even");
+            ($id, $accession, $organism) = parseMatchId($row[1]);
+            $type = $row[-1] eq "?" ? ($n % 2 ? "non-signif-odd" : "non-signif-even") : ($n % 2 ? "odd" : "even");
 
             print <<HTML;
                     <div class="result-row $type" id="result$n">
 HTML
 
-            foreach my $field ($row[0], $id, $accession, @row[8..10], $row[-1]) {
+            foreach my $field ($row[0], $id, $accession, $organism, @row[8..10], $row[-1]) {
 
                 print <<HTML;
                         <div class="result-col">$field</div>
@@ -439,6 +441,10 @@ HTML
                                     <td>$accession</td>
                                 </tr>
                                 <tr>
+                                    <td class="detail-col-1">Database Entry Organism</td>
+                                    <td>$organism</td>
+                                </tr>
+                                <tr>
                                     <td class="detail-col-1">Query<sub>Start</sub></td>
                                     <td>$row[2]</td>
                                 </tr>
@@ -447,11 +453,11 @@ HTML
                                     <td>$row[3]</td>
                                 </tr>
                                 <tr>
-                                    <td class="detail-col-1">DB Entry<sub>Start</sub></td>
+                                    <td class="detail-col-1">Match<sub>Start</sub></td>
                                     <td>$row[4]</td>
                                 </tr>
                                 <tr>
-                                    <td class="detail-col-1">DB Entry<sub>End</sub></td>
+                                    <td class="detail-col-1">Match<sub>End</sub></td>
                                     <td>$row[5]</td>
                                 </tr>
                                 <tr>
@@ -459,7 +465,7 @@ HTML
                                     <td>$row[6]</td>
                                 </tr>
                                 <tr>
-                                    <td class="detail-col-1">DB Entry<sub>Seed</sub></td>
+                                    <td class="detail-col-1">Match<sub>Seed</sub></td>
                                     <td>$row[7]</td>
                                 </tr>
                                 <tr>
@@ -482,7 +488,7 @@ HTML
                                     <td>$row[12]</td>
                                 </tr>
                                 <tr>
-                                    <td class="detail-col-1">DB Entry<sub>Base-pair support</sub></td>
+                                    <td class="detail-col-1">Match<sub>Base-pair support</sub></td>
                                     <td>$row[11]</td>
                                 </tr>
                                 <tr>
@@ -522,7 +528,7 @@ HTML
                                 <tr>
                                     <td><p><strong>Query</strong></p></td>
                                     <td style="width: 100px;">&nbsp;</td>
-                                    <td><p><strong>DB Entry</strong></p></td>
+                                    <td><p><strong>Match</strong></p></td>
                                 </tr>
                                 <tr>
                                     <td>$querySVG</td>
@@ -557,7 +563,7 @@ HTML
                                     <td><a href="../results/$jobId/r2dt_out/results/json/svg/$baseName.query.svg">$baseName.query.svg</a></td>
                                 </tr>
                                 <tr>
-                                    <td class="detail-col-1">DB Entry structure plot (SVG):</td>
+                                    <td class="detail-col-1">Match structure plot (SVG):</td>
                                     <td><a href="../results/$jobId/r2dt_out/results/json/svg/$baseName.db.svg">$baseName.db.svg</a></td>
                                 </tr>
 HTML
@@ -587,16 +593,52 @@ HTML
 
 }
 
-sub accessionToLink {
+sub parseMatchId {
 
-    my $accession = shift;
-    my ($url);
+    my $matchId = shift;
 
-    if ($accession =~ /^URS\w+$/) { $url = "https://rnacentral.org/rna/$accession/"; }
-    elsif ($accession =~ /^ENSMUST\d+(?:\.\d+)?$/) { $url = "https://www.ensembl.org/Mus_musculus/Transcript/Summary?t=$accession"; }
-    elsif ($accession =~ /^ENST\d+(?:\.\d+)?$/) { $url = "https://www.ensembl.org/Homo_sapiens/Transcript/Summary?t=$accession"; }
+    my ($id, $accession, $organism);
 
-    return("<a href=\"$url\">$accession</a>");
+    foreach my $field (split(/_/, $matchId)) {
+
+        my ($url);
+
+        if ($field =~ /^rc\:(.+?)$/) { $url = "https://rnacentral.org/rna/$1/"; }
+        elsif ($field =~ /^gb\:(.+?)$/) { $url = "https://www.ncbi.nlm.nih.gov/nuccore/$1"; }
+        elsif ($accession =~ /^ens\:(.+?)$/) {
+
+            my ($species, $acc);
+            $acc = $1;
+
+            if ($accession =~ /^ENSMUST\d+(?:\.\d+)?$/) { $species = "Mus_musculus"; }
+            elsif ($accession =~ /^ENST\d+(?:\.\d+)?$/) { $species = "Homo_sapiens"; }
+
+            $url = "https://www.ensembl.org/$species/Transcript/Summary?t=$acc";
+
+        }
+        elsif ($field =~ /^org\:(.+?)$/) { 
+            
+            $organism = $1; 
+            $organism =~ s/\./ /g;
+
+        }
+        elsif ($field =~ /^(?:id\:)?([^\:]+)$/) { 
+            
+            $id = $1;
+            $id =~ s/\./ /g;
+            
+        }
+
+        if (defined $url) {
+
+            $field =~ s/^[^\:]+\://;
+            $accession = "<a href=\"$url\">$field</a>";
+
+        }
+
+    }
+
+    return($id, $accession, $organism);
 
 }
 
@@ -629,7 +671,7 @@ sub importStockholm {
 
     $qSeq = $seq{query};
     $dSeq = $seq{db};
-    $maxPosLen = max($dEnd, $qEnd);
+    $maxPosLen = max(map { length($_) } ($dEnd, $qEnd));
 
     while(length($seq{query}) >= $maxAlnRowLen) {
 
@@ -639,13 +681,13 @@ sub importStockholm {
         $db = substr($seq{db}, 0, $maxAlnRowLen);
         @qCoords = ($qStart, $qStart + $maxAlnRowLen - 1);
         @dCoords = ($dStart, $dStart + $maxAlnRowLen - 1);
-        ($qCoords[0], $dCoords[0]) = alignPos($qCoords[0], $dCoords[0]);
+        ($qCoords[0], $dCoords[0]) = alignPos($qCoords[0], $dCoords[0], $maxPosLen);
 
         for (0 .. $maxAlnRowLen - 1) { $aln .= substr($query, $_, 1) eq substr($db, $_, 1) ? "|" : " "; }
 
-        $html .= " Query     $qCoords[0]  $query  $qCoords[1]\n" .
-                 "           " . (" " x length($qCoords[0])) . "  $aln\n" .
-                 " DB Entry  $dCoords[0]  $db  $dCoords[1]";
+        $html .= " Query  $qCoords[0]  $query  $qCoords[1]\n" .
+                 "        " . (" " x length($qCoords[0])) . "  $aln\n" .
+                 " Match  $dCoords[0]  $db  $dCoords[1]";
 
         $seq{query} =~ s/^$query//;
         $seq{db} =~ s/^$db//;
@@ -660,13 +702,13 @@ sub importStockholm {
     if (length($seq{query})) {
 
         my ($aln);
-        ($qStart, $dStart) = alignPos($qStart, $dStart);
+        ($qStart, $dStart) = alignPos($qStart, $dStart, $maxPosLen);
 
         for (0 .. length($seq{query}) - 1) { $aln .= substr($seq{query}, $_, 1) eq substr($seq{db}, $_, 1) ? "|" : " "; }
 
-        $html .= " Query     $qStart  $seq{query}  $qEnd\n" .
-                 "           " . (" " x length($qStart)) . "  $aln\n" .
-                 " DB Entry  $dStart  $seq{db}  $dEnd";
+        $html .= " Query  $qStart  $seq{query}  $qEnd\n" .
+                 "        " . (" " x length($qStart)) . "  $aln\n" .
+                 " Match  $dStart  $seq{db}  $dEnd";
 
     }
 
@@ -680,7 +722,13 @@ sub alignPos {
     my $spaces = " " x (max($maxLen, map { length($_) } ($pos1, $pos2)) - min(map { length($_) } ($pos1, $pos2)));
     
     if (length($pos1) > length($pos2)) { $pos2 .= $spaces; }
-    else { $pos1 .= $spaces; }
+    elsif (length($pos1) < length($pos2)) { $pos1 .= $spaces; }
+    else {
+
+        $pos2 .= $spaces;
+        $pos1 .= $spaces;
+
+    }
 
     return($pos1, $pos2);
 
@@ -701,8 +749,8 @@ sub importJson {
     close($fh);
 
     $json = decode_json($json);
-    $queryReact = join(",", map { $_ eq "NaN" ? "'NaN'" : min(1, $_) } @{$json->{query}});
-    $dbReact = join(",", map { $_ eq "NaN" ? "'NaN'" : min(1, $_) } @{$json->{target}});
+    $queryReact = join(",", map { $_ eq "NaN" ? "'NaN'" : $_ } @{$json->{query}});
+    $dbReact = join(",", map { $_ eq "NaN" ? "'NaN'" : $_ } @{$json->{target}});
     $queryColor = react2color(@{$json->{query}});
     $dbColor = react2color(@{$json->{target}});
     $qSeq = seq2bases($qSeq, $qStart);
@@ -753,6 +801,12 @@ sub importStructSVG {
     $db =~ s/<svg/<svg id="result$n-structure-db"/;
     $query =~ s/>x<\/text>/>-<\/text>/g;
     $db =~ s/>x<\/text>/>-<\/text>/g;
+    $query =~ s/"text-green/"text-black/g;
+    $db =~ s/"text-green/"text-black/g;
+    $query =~ s/"text-/"text-svg text-/g;
+    $db =~ s/"text-/"text-svg text-/g;
+    $query =~ s/text \{ element-wise:/.text-svg \{ element-wise:/g;
+    $db =~ s/text \{ element-wise:/.text-svg \{ element-wise:/g;
 
     ($width, $height) = $query =~ /width="(.+?)" height="(.+?)"/;
     $width ||= $maxSVGsize;

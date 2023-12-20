@@ -7,7 +7,7 @@ use File::Path qw(mkpath);
 use JSON;
 use POSIX qw(setsid);
 
-use lib "/var/www/html/scripts/lib";
+use lib "/var/www/html/shapewarp/scripts/lib";
 
 use Core::Mathematics qw(:all);
 use Core::Utils;
@@ -305,6 +305,8 @@ sub validateQuery {
 
                 $totLen += @reactivity;
                 $nQueries++;
+                $query[$i] =~ s/\s/_/g;
+                $query[$i + 2] =~ s/\s//g;
                 $parsedQuery .= join("\n", @query[$i .. $i + 2]) . "\n";
                 $ids{$query[$i]} = 1;
 

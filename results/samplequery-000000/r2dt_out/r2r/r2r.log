@@ -1,0 +1,859 @@
+PROCESSING: r2r-input.gsc.sto input
+NOTE: no #=GC R2R_LABEL line.  But that's okay.
+NOTE: no #=GR ... CLEAVAGE specified for oneSeq: input .  But that's okay.
+NOTE: no #=GR ... DELETE_COLS specified for oneSeq: input .  But that's okay.
+<<<<<......<<<<<<.....>>>>>>....>>>>><<...<<.<<.<<<.<.<<<<<<<<...<<<<<<<.....<<<<<<<...<<........>>......>>>>>>><<....>>....<<....>>.>>>>>>>..>>>.>>>>>.>.>>>.....<<....>>>>.>>...>>..<<<<.........>>>>.
+posInfoVector[0].cleavageCode=.
+posInfoVector[1].cleavageCode=.
+posInfoVector[2].cleavageCode=.
+posInfoVector[3].cleavageCode=.
+posInfoVector[4].cleavageCode=.
+posInfoVector[5].cleavageCode=.
+posInfoVector[6].cleavageCode=.
+posInfoVector[7].cleavageCode=.
+posInfoVector[8].cleavageCode=.
+posInfoVector[9].cleavageCode=.
+posInfoVector[10].cleavageCode=.
+posInfoVector[11].cleavageCode=.
+posInfoVector[12].cleavageCode=.
+posInfoVector[13].cleavageCode=.
+posInfoVector[14].cleavageCode=.
+posInfoVector[15].cleavageCode=.
+posInfoVector[16].cleavageCode=.
+posInfoVector[17].cleavageCode=.
+posInfoVector[18].cleavageCode=.
+posInfoVector[19].cleavageCode=.
+posInfoVector[20].cleavageCode=.
+posInfoVector[21].cleavageCode=.
+posInfoVector[22].cleavageCode=.
+posInfoVector[23].cleavageCode=.
+posInfoVector[24].cleavageCode=.
+posInfoVector[25].cleavageCode=.
+posInfoVector[26].cleavageCode=.
+posInfoVector[27].cleavageCode=.
+posInfoVector[28].cleavageCode=.
+posInfoVector[29].cleavageCode=.
+posInfoVector[30].cleavageCode=.
+posInfoVector[31].cleavageCode=.
+posInfoVector[32].cleavageCode=.
+posInfoVector[33].cleavageCode=.
+posInfoVector[34].cleavageCode=.
+posInfoVector[35].cleavageCode=.
+posInfoVector[36].cleavageCode=.
+posInfoVector[37].cleavageCode=.
+posInfoVector[38].cleavageCode=.
+posInfoVector[39].cleavageCode=.
+posInfoVector[40].cleavageCode=.
+posInfoVector[41].cleavageCode=.
+posInfoVector[42].cleavageCode=.
+posInfoVector[43].cleavageCode=.
+posInfoVector[44].cleavageCode=.
+posInfoVector[45].cleavageCode=.
+posInfoVector[46].cleavageCode=.
+posInfoVector[47].cleavageCode=.
+posInfoVector[48].cleavageCode=.
+posInfoVector[49].cleavageCode=.
+posInfoVector[50].cleavageCode=.
+posInfoVector[51].cleavageCode=.
+posInfoVector[52].cleavageCode=.
+posInfoVector[53].cleavageCode=.
+posInfoVector[54].cleavageCode=.
+posInfoVector[55].cleavageCode=.
+posInfoVector[56].cleavageCode=.
+posInfoVector[57].cleavageCode=.
+posInfoVector[58].cleavageCode=.
+posInfoVector[59].cleavageCode=.
+posInfoVector[60].cleavageCode=.
+posInfoVector[61].cleavageCode=.
+posInfoVector[62].cleavageCode=.
+posInfoVector[63].cleavageCode=.
+posInfoVector[64].cleavageCode=.
+posInfoVector[65].cleavageCode=.
+posInfoVector[66].cleavageCode=.
+posInfoVector[67].cleavageCode=.
+posInfoVector[68].cleavageCode=.
+posInfoVector[69].cleavageCode=.
+posInfoVector[70].cleavageCode=.
+posInfoVector[71].cleavageCode=.
+posInfoVector[72].cleavageCode=.
+posInfoVector[73].cleavageCode=.
+posInfoVector[74].cleavageCode=.
+posInfoVector[75].cleavageCode=.
+posInfoVector[76].cleavageCode=.
+posInfoVector[77].cleavageCode=.
+posInfoVector[78].cleavageCode=.
+posInfoVector[79].cleavageCode=.
+posInfoVector[80].cleavageCode=.
+posInfoVector[81].cleavageCode=.
+posInfoVector[82].cleavageCode=.
+posInfoVector[83].cleavageCode=.
+posInfoVector[84].cleavageCode=.
+posInfoVector[85].cleavageCode=.
+posInfoVector[86].cleavageCode=.
+posInfoVector[87].cleavageCode=.
+posInfoVector[88].cleavageCode=.
+posInfoVector[89].cleavageCode=.
+posInfoVector[90].cleavageCode=.
+posInfoVector[91].cleavageCode=.
+posInfoVector[92].cleavageCode=.
+posInfoVector[93].cleavageCode=.
+posInfoVector[94].cleavageCode=.
+posInfoVector[95].cleavageCode=.
+posInfoVector[96].cleavageCode=.
+posInfoVector[97].cleavageCode=.
+posInfoVector[98].cleavageCode=.
+posInfoVector[99].cleavageCode=.
+posInfoVector[100].cleavageCode=.
+posInfoVector[101].cleavageCode=.
+posInfoVector[102].cleavageCode=.
+posInfoVector[103].cleavageCode=.
+posInfoVector[104].cleavageCode=.
+posInfoVector[105].cleavageCode=.
+posInfoVector[106].cleavageCode=.
+posInfoVector[107].cleavageCode=.
+posInfoVector[108].cleavageCode=.
+posInfoVector[109].cleavageCode=.
+posInfoVector[110].cleavageCode=.
+posInfoVector[111].cleavageCode=.
+posInfoVector[112].cleavageCode=.
+posInfoVector[113].cleavageCode=.
+posInfoVector[114].cleavageCode=.
+posInfoVector[115].cleavageCode=.
+posInfoVector[116].cleavageCode=.
+posInfoVector[117].cleavageCode=.
+posInfoVector[118].cleavageCode=.
+posInfoVector[119].cleavageCode=.
+posInfoVector[120].cleavageCode=.
+posInfoVector[121].cleavageCode=.
+posInfoVector[122].cleavageCode=.
+posInfoVector[123].cleavageCode=.
+posInfoVector[124].cleavageCode=.
+posInfoVector[125].cleavageCode=.
+posInfoVector[126].cleavageCode=.
+posInfoVector[127].cleavageCode=.
+posInfoVector[128].cleavageCode=.
+posInfoVector[129].cleavageCode=.
+posInfoVector[130].cleavageCode=.
+posInfoVector[131].cleavageCode=.
+posInfoVector[132].cleavageCode=.
+posInfoVector[133].cleavageCode=.
+posInfoVector[134].cleavageCode=.
+posInfoVector[135].cleavageCode=.
+posInfoVector[136].cleavageCode=.
+posInfoVector[137].cleavageCode=.
+posInfoVector[138].cleavageCode=.
+posInfoVector[139].cleavageCode=.
+posInfoVector[140].cleavageCode=.
+posInfoVector[141].cleavageCode=.
+posInfoVector[142].cleavageCode=.
+posInfoVector[143].cleavageCode=.
+posInfoVector[144].cleavageCode=.
+posInfoVector[145].cleavageCode=.
+posInfoVector[146].cleavageCode=.
+posInfoVector[147].cleavageCode=.
+posInfoVector[148].cleavageCode=.
+posInfoVector[149].cleavageCode=.
+posInfoVector[150].cleavageCode=.
+posInfoVector[151].cleavageCode=.
+posInfoVector[152].cleavageCode=.
+posInfoVector[153].cleavageCode=.
+posInfoVector[154].cleavageCode=.
+posInfoVector[155].cleavageCode=.
+posInfoVector[156].cleavageCode=.
+posInfoVector[157].cleavageCode=.
+posInfoVector[158].cleavageCode=.
+posInfoVector[159].cleavageCode=.
+posInfoVector[160].cleavageCode=.
+posInfoVector[161].cleavageCode=.
+posInfoVector[162].cleavageCode=.
+posInfoVector[163].cleavageCode=.
+posInfoVector[164].cleavageCode=.
+posInfoVector[165].cleavageCode=.
+posInfoVector[166].cleavageCode=.
+posInfoVector[167].cleavageCode=.
+posInfoVector[168].cleavageCode=.
+posInfoVector[169].cleavageCode=.
+posInfoVector[170].cleavageCode=.
+posInfoVector[171].cleavageCode=.
+posInfoVector[172].cleavageCode=.
+posInfoVector[173].cleavageCode=.
+posInfoVector[174].cleavageCode=.
+posInfoVector[175].cleavageCode=.
+posInfoVector[176].cleavageCode=.
+posInfoVector[177].cleavageCode=.
+posInfoVector[178].cleavageCode=.
+posInfoVector[179].cleavageCode=.
+posInfoVector[180].cleavageCode=.
+posInfoVector[181].cleavageCode=.
+posInfoVector[182].cleavageCode=.
+posInfoVector[183].cleavageCode=.
+posInfoVector[184].cleavageCode=.
+posInfoVector[185].cleavageCode=.
+posInfoVector[186].cleavageCode=.
+posInfoVector[187].cleavageCode=.
+posInfoVector[188].cleavageCode=.
+posInfoVector[189].cleavageCode=.
+posInfoVector[190].cleavageCode=.
+posInfoVector[191].cleavageCode=.
+posInfoVector[192].cleavageCode=.
+posInfoVector[193].cleavageCode=.
+posInfoVector[194].cleavageCode=.
+posInfoVector[195].cleavageCode=.
+posInfoVector[196].cleavageCode=.
+posInfoVector[197].cleavageCode=.
+posInfoVector[198].cleavageCode=.
+posInfoVector[199].cleavageCode=.
+ssContextList: 
+[0,5;32,37) T,F,T Pair
+[5,11;28,32) F,F,T InternalLoop
+[11,17;22,28) F,F,T Pair
+[17,22;22,22) F,T,T TerminalLoop
+[37,39;178,180) T,F,T Pair
+[39,42;175,178) F,F,T InternalLoop
+[42,44;173,175) F,F,T Pair
+[44,45;172,173) F,F,T InternalLoop
+[45,47;170,172) F,F,T Pair
+[47,48;170,170) F,F,F InternalLoop
+[48,51;154,157) T,F,T Pair
+[51,52;153,154) F,F,T InternalLoop
+[52,53;152,153) F,F,T Pair
+[53,54;151,152) F,F,T InternalLoop
+[54,59;146,151) F,F,T Pair
+[59,59;145,146) F,F,T InternalLoop
+[59,62;142,145) F,F,T Pair
+[62,65;140,142) F,F,T InternalLoop
+[65,72;133,140) F,F,T Pair
+[72,77;133,133) F,F,F InternalLoop
+[77,84;105,112) T,F,T Pair
+[84,87;99,105) F,F,T InternalLoop
+[87,89;97,99) F,F,T Pair
+[89,97;97,97) F,T,T TerminalLoop
+[112,114;118,120) T,F,T Pair
+[114,118;118,118) F,T,T TerminalLoop
+[120,124;133,133) F,F,F InternalLoop
+[124,126;130,132) T,F,T Pair
+[126,130;130,130) F,T,T TerminalLoop
+[132,133;133,133) F,T,F InternalLoop
+[157,162;170,170) F,F,F InternalLoop
+[162,164;168,170) T,F,T Pair
+[164,168;168,168) F,T,T TerminalLoop
+[180,182;200,200) F,F,F InternalLoop
+[182,186;195,199) T,F,T Pair
+[186,195;195,195) F,T,T TerminalLoop
+[199,200;200,200) F,F,F InternalLoop
+multistem_junction_circular    height=0.218811, radius=0.234741
+multistem_junction_circular (motif "r2r-input.gsc.sto input", text pos 63, line # 0):
+	place_explicit <textcolumn 63> <textcolumn 61> 0 1.42743 -1.32754 0 0 274.153
+multistem_junction_circular (motif "r2r-input.gsc.sto input", text pos 177, line # 0):
+	place_explicit <textcolumn 177> <textcolumn 61> 0 2.06577 3.04508 0 0 471.694
+plan 47: 0.234741
+plan 157: 0.234741
+multistem_junction_circular    height=0.333571, radius=0.344231
+multistem_junction_circular (motif "r2r-input.gsc.sto input", text pos 92, line # 0):
+	place_explicit <textcolumn 92> <textcolumn 86> 0 4.79458 -2.04194 0 0 313.863
+multistem_junction_circular (motif "r2r-input.gsc.sto input", text pos 127, line # 0):
+	place_explicit <textcolumn 127> <textcolumn 86> 0 6.35374 -2.54741e-07 0 0 360
+multistem_junction_circular (motif "r2r-input.gsc.sto input", text pos 139, line # 0):
+	place_explicit <textcolumn 139> <textcolumn 86> 0 2.49402 4.01601 0 0 476.318
+plan 72: 0.344231
+plan 120: 0.344231
+plan 132: 0.344231
+ssContext
+		[15,19;47,51] Pair {raw [0,5;32,37) }  Pair  openHairpin
+	link
+		posFrom: 4 , [15,19;47,51] Pair {raw [0,5;32,37) }
+		posTo  : 5 , [20,25;43,46] InternalLoop {raw [5,11;28,32) }
+		default rule
+		involvesCircularLayout==true
+	link
+		posFrom: 36 , [15,19;47,51] Pair {raw [0,5;32,37) }
+		posTo  : 37 , [52,53;193,194] Pair {raw [37,39;178,180) }
+		default rule
+		-45 (2,0) -90  no flip
+ssContext
+		[20,25;43,46] InternalLoop {raw [5,11;28,32) }  InternalLoop
+	link
+		posFrom: 5 , [20,25;43,46] InternalLoop {raw [5,11;28,32) }
+		posTo  : 4 , [15,19;47,51] Pair {raw [0,5;32,37) }
+		default rule
+		involvesCircularLayout==true
+	link
+		posFrom: 10 , [20,25;43,46] InternalLoop {raw [5,11;28,32) }
+		posTo  : 11 , [26,31;37,42] Pair {raw [11,17;22,28) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[26,31;37,42] Pair {raw [11,17;22,28) }  Pair
+	link
+		posFrom: 11 , [26,31;37,42] Pair {raw [11,17;22,28) }
+		posTo  : 10 , [20,25;43,46] InternalLoop {raw [5,11;28,32) }
+		default rule
+		involvesCircularLayout==true
+	link
+		posFrom: 16 , [26,31;37,42] Pair {raw [11,17;22,28) }
+		posTo  : 17 , [32,36;37,=] TerminalLoop {raw [17,22;22,22) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[32,36;37,=] TerminalLoop {raw [17,22;22,22) }  TerminalLoop
+	link
+		posFrom: 17 , [32,36;37,=] TerminalLoop {raw [17,22;22,22) }
+		posTo  : 16 , [26,31;37,42] Pair {raw [11,17;22,28) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[52,53;193,194] Pair {raw [37,39;178,180) }  Pair  openHairpin
+	link
+		posFrom: 37 , [52,53;193,194] Pair {raw [37,39;178,180) }
+		posTo  : 36 , [15,19;47,51] Pair {raw [0,5;32,37) }
+		default rule
+		45 (-2,-0) 90  no flip
+	link
+		posFrom: 38 , [52,53;193,194] Pair {raw [37,39;178,180) }
+		posTo  : 39 , [54,56;190,192] InternalLoop {raw [39,42;175,178) }
+		default rule
+		involvesCircularLayout==true
+	link
+		posFrom: 179 , [52,53;193,194] Pair {raw [37,39;178,180) }
+		posTo  : 180 , [195,196;inf,=] Outside {raw [180,182;200,200) }
+		default rule
+		-45 (1,0) -90  no flip
+ssContext
+		[54,56;190,192] InternalLoop {raw [39,42;175,178) }  InternalLoop
+	link
+		posFrom: 39 , [54,56;190,192] InternalLoop {raw [39,42;175,178) }
+		posTo  : 38 , [52,53;193,194] Pair {raw [37,39;178,180) }
+		default rule
+		involvesCircularLayout==true
+	link
+		posFrom: 41 , [54,56;190,192] InternalLoop {raw [39,42;175,178) }
+		posTo  : 42 , [57,58;188,189] Pair {raw [42,44;173,175) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[57,58;188,189] Pair {raw [42,44;173,175) }  Pair
+	link
+		posFrom: 42 , [57,58;188,189] Pair {raw [42,44;173,175) }
+		posTo  : 41 , [54,56;190,192] InternalLoop {raw [39,42;175,178) }
+		default rule
+		involvesCircularLayout==true
+	link
+		posFrom: 43 , [57,58;188,189] Pair {raw [42,44;173,175) }
+		posTo  : 44 , [59,59;187,187] InternalLoop {raw [44,45;172,173) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[59,59;187,187] InternalLoop {raw [44,45;172,173) }  InternalLoop
+	link
+		posFrom: 44 , [59,59;187,187] InternalLoop {raw [44,45;172,173) }
+		posTo  : 43 , [57,58;188,189] Pair {raw [42,44;173,175) }
+		default rule
+		involvesCircularLayout==true
+	link
+		posFrom: 44 , [59,59;187,187] InternalLoop {raw [44,45;172,173) }
+		posTo  : 45 , [60,61;185,186] Pair {raw [45,47;170,172) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[60,61;185,186] Pair {raw [45,47;170,172) }  Pair
+	link
+		posFrom: 46 , [60,61;185,186] Pair {raw [45,47;170,172) }
+		posTo  : 48 , [63,65;169,171] Pair {raw [48,51;154,157) }
+		place_explicit Default multistem layout:0
+		0 (1.42743,-1.32754) 274.153  no flip
+	link
+		posFrom: 46 , [60,61;185,186] Pair {raw [45,47;170,172) }
+		posTo  : 162 , [177,178;183,184] Pair {raw [162,164;168,170) }
+		place_explicit Default multistem layout:0
+		0 (2.06577,3.04508) 471.694  no flip
+	link
+		posFrom: 45 , [60,61;185,186] Pair {raw [45,47;170,172) }
+		posTo  : 44 , [59,59;187,187] InternalLoop {raw [44,45;172,173) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[62,62;185,=] InternalLoop {raw [47,48;170,170) }  InternalLoop
+ssContext
+		[63,65;169,171] Pair {raw [48,51;154,157) }  Pair  openHairpin
+	link
+		posFrom: 48 , [63,65;169,171] Pair {raw [48,51;154,157) }
+		posTo  : 46 , [60,61;185,186] Pair {raw [45,47;170,172) }
+		place_explicit Default multistem layout:0
+		-274.153 (-1.42743,1.32754) -274.153  no flip
+	link
+		posFrom: 50 , [63,65;169,171] Pair {raw [48,51;154,157) }
+		posTo  : 51 , [66,66;168,168] InternalLoop {raw [51,52;153,154) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[66,66;168,168] InternalLoop {raw [51,52;153,154) }  InternalLoop
+	link
+		posFrom: 51 , [66,66;168,168] InternalLoop {raw [51,52;153,154) }
+		posTo  : 50 , [63,65;169,171] Pair {raw [48,51;154,157) }
+		default rule
+		involvesCircularLayout==true
+	link
+		posFrom: 51 , [66,66;168,168] InternalLoop {raw [51,52;153,154) }
+		posTo  : 52 , [67,67;167,167] Pair {raw [52,53;152,153) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[67,67;167,167] Pair {raw [52,53;152,153) }  Pair
+	link
+		posFrom: 52 , [67,67;167,167] Pair {raw [52,53;152,153) }
+		posTo  : 51 , [66,66;168,168] InternalLoop {raw [51,52;153,154) }
+		default rule
+		involvesCircularLayout==true
+	link
+		posFrom: 52 , [67,67;167,167] Pair {raw [52,53;152,153) }
+		posTo  : 53 , [68,68;166,166] InternalLoop {raw [53,54;151,152) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[68,68;166,166] InternalLoop {raw [53,54;151,152) }  InternalLoop
+	link
+		posFrom: 53 , [68,68;166,166] InternalLoop {raw [53,54;151,152) }
+		posTo  : 52 , [67,67;167,167] Pair {raw [52,53;152,153) }
+		default rule
+		involvesCircularLayout==true
+	link
+		posFrom: 53 , [68,68;166,166] InternalLoop {raw [53,54;151,152) }
+		posTo  : 54 , [69,73;161,165] Pair {raw [54,59;146,151) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[69,73;161,165] Pair {raw [54,59;146,151) }  Pair
+	link
+		posFrom: 54 , [69,73;161,165] Pair {raw [54,59;146,151) }
+		posTo  : 53 , [68,68;166,166] InternalLoop {raw [53,54;151,152) }
+		default rule
+		involvesCircularLayout==true
+	link
+		posFrom: 58 , [69,73;161,165] Pair {raw [54,59;146,151) }
+		posTo  : 145 , [74,=;160,160] InternalLoop {raw [59,59;145,146) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[74,=;160,160] InternalLoop {raw [59,59;145,146) }  InternalLoop
+	link
+		posFrom: 145 , [74,=;160,160] InternalLoop {raw [59,59;145,146) }
+		posTo  : 58 , [69,73;161,165] Pair {raw [54,59;146,151) }
+		default rule
+		involvesCircularLayout==true
+	link
+		posFrom: 145 , [74,=;160,160] InternalLoop {raw [59,59;145,146) }
+		posTo  : 59 , [74,76;157,159] Pair {raw [59,62;142,145) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[74,76;157,159] Pair {raw [59,62;142,145) }  Pair
+	link
+		posFrom: 59 , [74,76;157,159] Pair {raw [59,62;142,145) }
+		posTo  : 145 , [74,=;160,160] InternalLoop {raw [59,59;145,146) }
+		default rule
+		involvesCircularLayout==true
+	link
+		posFrom: 61 , [74,76;157,159] Pair {raw [59,62;142,145) }
+		posTo  : 62 , [77,79;155,156] InternalLoop {raw [62,65;140,142) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[77,79;155,156] InternalLoop {raw [62,65;140,142) }  InternalLoop
+	link
+		posFrom: 62 , [77,79;155,156] InternalLoop {raw [62,65;140,142) }
+		posTo  : 61 , [74,76;157,159] Pair {raw [59,62;142,145) }
+		default rule
+		involvesCircularLayout==true
+	link
+		posFrom: 64 , [77,79;155,156] InternalLoop {raw [62,65;140,142) }
+		posTo  : 65 , [80,86;148,154] Pair {raw [65,72;133,140) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[80,86;148,154] Pair {raw [65,72;133,140) }  Pair
+	link
+		posFrom: 71 , [80,86;148,154] Pair {raw [65,72;133,140) }
+		posTo  : 77 , [92,98;120,126] Pair {raw [77,84;105,112) }
+		place_explicit Default multistem layout:0
+		0 (4.79458,-2.04194) 313.863  no flip
+	link
+		posFrom: 71 , [80,86;148,154] Pair {raw [65,72;133,140) }
+		posTo  : 112 , [127,128;133,134] Pair {raw [112,114;118,120) }
+		place_explicit Default multistem layout:0
+		0 (6.35374,-2.54741e-07) 360  no flip
+	link
+		posFrom: 71 , [80,86;148,154] Pair {raw [65,72;133,140) }
+		posTo  : 124 , [139,140;145,146] Pair {raw [124,126;130,132) }
+		place_explicit Default multistem layout:0
+		0 (2.49402,4.01601) 476.318  no flip
+	link
+		posFrom: 65 , [80,86;148,154] Pair {raw [65,72;133,140) }
+		posTo  : 64 , [77,79;155,156] InternalLoop {raw [62,65;140,142) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[87,91;148,=] InternalLoop {raw [72,77;133,133) }  InternalLoop
+ssContext
+		[92,98;120,126] Pair {raw [77,84;105,112) }  Pair  openHairpin
+	link
+		posFrom: 77 , [92,98;120,126] Pair {raw [77,84;105,112) }
+		posTo  : 71 , [80,86;148,154] Pair {raw [65,72;133,140) }
+		place_explicit Default multistem layout:0
+		-313.863 (-4.79458,2.04194) -313.863  no flip
+	link
+		posFrom: 83 , [92,98;120,126] Pair {raw [77,84;105,112) }
+		posTo  : 84 , [99,101;114,119] InternalLoop {raw [84,87;99,105) }
+		default rule
+		involvesCircularLayout==true
+	link
+		posFrom: 111 , [92,98;120,126] Pair {raw [77,84;105,112) }
+		posTo  : 112 , [127,128;133,134] Pair {raw [112,114;118,120) }
+		default rule
+		-45 (2,0) -90  no flip
+ssContext
+		[99,101;114,119] InternalLoop {raw [84,87;99,105) }  InternalLoop
+	link
+		posFrom: 84 , [99,101;114,119] InternalLoop {raw [84,87;99,105) }
+		posTo  : 83 , [92,98;120,126] Pair {raw [77,84;105,112) }
+		default rule
+		involvesCircularLayout==true
+	link
+		posFrom: 86 , [99,101;114,119] InternalLoop {raw [84,87;99,105) }
+		posTo  : 87 , [102,103;112,113] Pair {raw [87,89;97,99) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[102,103;112,113] Pair {raw [87,89;97,99) }  Pair
+	link
+		posFrom: 87 , [102,103;112,113] Pair {raw [87,89;97,99) }
+		posTo  : 86 , [99,101;114,119] InternalLoop {raw [84,87;99,105) }
+		default rule
+		involvesCircularLayout==true
+	link
+		posFrom: 88 , [102,103;112,113] Pair {raw [87,89;97,99) }
+		posTo  : 89 , [104,111;112,=] TerminalLoop {raw [89,97;97,97) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[104,111;112,=] TerminalLoop {raw [89,97;97,97) }  TerminalLoop
+	link
+		posFrom: 89 , [104,111;112,=] TerminalLoop {raw [89,97;97,97) }
+		posTo  : 88 , [102,103;112,113] Pair {raw [87,89;97,99) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[127,128;133,134] Pair {raw [112,114;118,120) }  Pair  openHairpin
+	link
+		posFrom: 112 , [127,128;133,134] Pair {raw [112,114;118,120) }
+		posTo  : 71 , [80,86;148,154] Pair {raw [65,72;133,140) }
+		place_explicit Default multistem layout:0
+		-360 (-6.35374,2.54741e-07) -360  no flip
+	link
+		posFrom: 112 , [127,128;133,134] Pair {raw [112,114;118,120) }
+		posTo  : 111 , [92,98;120,126] Pair {raw [77,84;105,112) }
+		default rule
+		45 (-2,-0) 90  no flip
+	link
+		posFrom: 113 , [127,128;133,134] Pair {raw [112,114;118,120) }
+		posTo  : 114 , [129,132;133,=] TerminalLoop {raw [114,118;118,118) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[129,132;133,=] TerminalLoop {raw [114,118;118,118) }  TerminalLoop
+	link
+		posFrom: 114 , [129,132;133,=] TerminalLoop {raw [114,118;118,118) }
+		posTo  : 113 , [127,128;133,134] Pair {raw [112,114;118,120) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[135,138;148,=] InternalLoop {raw [120,124;133,133) }  InternalLoop
+ssContext
+		[139,140;145,146] Pair {raw [124,126;130,132) }  Pair  openHairpin
+	link
+		posFrom: 124 , [139,140;145,146] Pair {raw [124,126;130,132) }
+		posTo  : 71 , [80,86;148,154] Pair {raw [65,72;133,140) }
+		place_explicit Default multistem layout:0
+		-476.318 (-2.49402,-4.01601) -476.318  no flip
+	link
+		posFrom: 125 , [139,140;145,146] Pair {raw [124,126;130,132) }
+		posTo  : 126 , [141,144;145,=] TerminalLoop {raw [126,130;130,130) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[141,144;145,=] TerminalLoop {raw [126,130;130,130) }  TerminalLoop
+	link
+		posFrom: 126 , [141,144;145,=] TerminalLoop {raw [126,130;130,130) }
+		posTo  : 125 , [139,140;145,146] Pair {raw [124,126;130,132) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[147,147;148,=] InternalLoop {raw [132,133;133,133) }  InternalLoop
+ssContext
+		[172,176;185,=] InternalLoop {raw [157,162;170,170) }  InternalLoop
+ssContext
+		[177,178;183,184] Pair {raw [162,164;168,170) }  Pair  openHairpin
+	link
+		posFrom: 162 , [177,178;183,184] Pair {raw [162,164;168,170) }
+		posTo  : 46 , [60,61;185,186] Pair {raw [45,47;170,172) }
+		place_explicit Default multistem layout:0
+		-471.694 (-2.06577,-3.04508) -471.694  no flip
+	link
+		posFrom: 163 , [177,178;183,184] Pair {raw [162,164;168,170) }
+		posTo  : 164 , [179,182;183,=] TerminalLoop {raw [164,168;168,168) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[179,182;183,=] TerminalLoop {raw [164,168;168,168) }  TerminalLoop
+	link
+		posFrom: 164 , [179,182;183,=] TerminalLoop {raw [164,168;168,168) }
+		posTo  : 163 , [177,178;183,184] Pair {raw [162,164;168,170) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[195,196;inf,=] Outside {raw [180,182;200,200) }  Outside
+	link
+		posFrom: 180 , [195,196;inf,=] Outside {raw [180,182;200,200) }
+		posTo  : 179 , [52,53;193,194] Pair {raw [37,39;178,180) }
+		default rule
+		45 (-1,-0) 90  no flip
+	link
+		posFrom: 181 , [195,196;inf,=] Outside {raw [180,182;200,200) }
+		posTo  : 182 , [197,200;210,213] Pair {raw [182,186;195,199) }
+		default rule
+		-45 (1,0) -90  no flip
+ssContext
+		[197,200;210,213] Pair {raw [182,186;195,199) }  Pair  openHairpin
+	link
+		posFrom: 182 , [197,200;210,213] Pair {raw [182,186;195,199) }
+		posTo  : 181 , [195,196;inf,=] Outside {raw [180,182;200,200) }
+		default rule
+		45 (-1,-0) 90  no flip
+	link
+		posFrom: 185 , [197,200;210,213] Pair {raw [182,186;195,199) }
+		posTo  : 186 , [201,209;210,=] TerminalLoop {raw [186,195;195,195) }
+		default rule
+		involvesCircularLayout==true
+	link
+		posFrom: 198 , [197,200;210,213] Pair {raw [182,186;195,199) }
+		posTo  : 199 , [214,214;inf,=] Outside {raw [199,200;200,200) }
+		default rule
+		-45 (1,0) -90  no flip
+ssContext
+		[201,209;210,=] TerminalLoop {raw [186,195;195,195) }  TerminalLoop
+	link
+		posFrom: 186 , [201,209;210,=] TerminalLoop {raw [186,195;195,195) }
+		posTo  : 185 , [197,200;210,213] Pair {raw [182,186;195,199) }
+		default rule
+		involvesCircularLayout==true
+ssContext
+		[214,214;inf,=] Outside {raw [199,200;200,200) }  Outside
+	link
+		posFrom: 199 , [214,214;inf,=] Outside {raw [199,200;200,200) }
+		posTo  : 198 , [197,200;210,213] Pair {raw [182,186;195,199) }
+		default rule
+		45 (-1,-0) 90  no flip
+going through place_explicit's in queue
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: dummy ssContext
+		posTo  : 0 , [15,19;47,51] Pair {raw [0,5;32,37) }
+		priorityClass=FirstRule
+		default rule
+		dummy rule to position first element
+			at: (0,0) -90  no flip
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 4 , [15,19;47,51] Pair {raw [0,5;32,37) }
+		posTo  : 5 , [20,25;43,46] InternalLoop {raw [5,11;28,32) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 10 , [20,25;43,46] InternalLoop {raw [5,11;28,32) }
+		posTo  : 11 , [26,31;37,42] Pair {raw [11,17;22,28) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 16 , [26,31;37,42] Pair {raw [11,17;22,28) }
+		posTo  : 17 , [32,36;37,=] TerminalLoop {raw [17,22;22,22) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 36 , [15,19;47,51] Pair {raw [0,5;32,37) }
+		posTo  : 37 , [52,53;193,194] Pair {raw [37,39;178,180) }
+		default rule
+		-45 (2,0) -90  no flip
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 38 , [52,53;193,194] Pair {raw [37,39;178,180) }
+		posTo  : 39 , [54,56;190,192] InternalLoop {raw [39,42;175,178) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 41 , [54,56;190,192] InternalLoop {raw [39,42;175,178) }
+		posTo  : 42 , [57,58;188,189] Pair {raw [42,44;173,175) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 43 , [57,58;188,189] Pair {raw [42,44;173,175) }
+		posTo  : 44 , [59,59;187,187] InternalLoop {raw [44,45;172,173) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 44 , [59,59;187,187] InternalLoop {raw [44,45;172,173) }
+		posTo  : 45 , [60,61;185,186] Pair {raw [45,47;170,172) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 46 , [60,61;185,186] Pair {raw [45,47;170,172) }
+		posTo  : 48 , [63,65;169,171] Pair {raw [48,51;154,157) }
+		place_explicit Default multistem layout:0
+		0 (1.42743,-1.32754) 274.153  no flip
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 46 , [60,61;185,186] Pair {raw [45,47;170,172) }
+		posTo  : 162 , [177,178;183,184] Pair {raw [162,164;168,170) }
+		place_explicit Default multistem layout:0
+		0 (2.06577,3.04508) 471.694  no flip
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 50 , [63,65;169,171] Pair {raw [48,51;154,157) }
+		posTo  : 51 , [66,66;168,168] InternalLoop {raw [51,52;153,154) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 51 , [66,66;168,168] InternalLoop {raw [51,52;153,154) }
+		posTo  : 52 , [67,67;167,167] Pair {raw [52,53;152,153) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 52 , [67,67;167,167] Pair {raw [52,53;152,153) }
+		posTo  : 53 , [68,68;166,166] InternalLoop {raw [53,54;151,152) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 53 , [68,68;166,166] InternalLoop {raw [53,54;151,152) }
+		posTo  : 54 , [69,73;161,165] Pair {raw [54,59;146,151) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 58 , [69,73;161,165] Pair {raw [54,59;146,151) }
+		posTo  : 145 , [74,=;160,160] InternalLoop {raw [59,59;145,146) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 145 , [74,=;160,160] InternalLoop {raw [59,59;145,146) }
+		posTo  : 59 , [74,76;157,159] Pair {raw [59,62;142,145) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 61 , [74,76;157,159] Pair {raw [59,62;142,145) }
+		posTo  : 62 , [77,79;155,156] InternalLoop {raw [62,65;140,142) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 64 , [77,79;155,156] InternalLoop {raw [62,65;140,142) }
+		posTo  : 65 , [80,86;148,154] Pair {raw [65,72;133,140) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 71 , [80,86;148,154] Pair {raw [65,72;133,140) }
+		posTo  : 77 , [92,98;120,126] Pair {raw [77,84;105,112) }
+		place_explicit Default multistem layout:0
+		0 (4.79458,-2.04194) 313.863  no flip
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 71 , [80,86;148,154] Pair {raw [65,72;133,140) }
+		posTo  : 112 , [127,128;133,134] Pair {raw [112,114;118,120) }
+		place_explicit Default multistem layout:0
+		0 (6.35374,-2.54741e-07) 360  no flip
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 71 , [80,86;148,154] Pair {raw [65,72;133,140) }
+		posTo  : 124 , [139,140;145,146] Pair {raw [124,126;130,132) }
+		place_explicit Default multistem layout:0
+		0 (2.49402,4.01601) 476.318  no flip
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 83 , [92,98;120,126] Pair {raw [77,84;105,112) }
+		posTo  : 84 , [99,101;114,119] InternalLoop {raw [84,87;99,105) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 86 , [99,101;114,119] InternalLoop {raw [84,87;99,105) }
+		posTo  : 87 , [102,103;112,113] Pair {raw [87,89;97,99) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 88 , [102,103;112,113] Pair {raw [87,89;97,99) }
+		posTo  : 89 , [104,111;112,=] TerminalLoop {raw [89,97;97,97) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 113 , [127,128;133,134] Pair {raw [112,114;118,120) }
+		posTo  : 114 , [129,132;133,=] TerminalLoop {raw [114,118;118,118) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 125 , [139,140;145,146] Pair {raw [124,126;130,132) }
+		posTo  : 126 , [141,144;145,=] TerminalLoop {raw [126,130;130,130) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 163 , [177,178;183,184] Pair {raw [162,164;168,170) }
+		posTo  : 164 , [179,182;183,=] TerminalLoop {raw [164,168;168,168) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 179 , [52,53;193,194] Pair {raw [37,39;178,180) }
+		posTo  : 180 , [195,196;inf,=] Outside {raw [180,182;200,200) }
+		default rule
+		-45 (1,0) -90  no flip
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 181 , [195,196;inf,=] Outside {raw [180,182;200,200) }
+		posTo  : 182 , [197,200;210,213] Pair {raw [182,186;195,199) }
+		default rule
+		-45 (1,0) -90  no flip
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 185 , [197,200;210,213] Pair {raw [182,186;195,199) }
+		posTo  : 186 , [201,209;210,=] TerminalLoop {raw [186,195;195,195) }
+		default rule
+		involvesCircularLayout==true
+got place_explicit from queue: calling PositionBackboneElement
+	link
+		posFrom: 198 , [197,200;210,213] Pair {raw [182,186;195,199) }
+		posTo  : 199 , [214,214;inf,=] Outside {raw [199,200;200,200) }
+		default rule
+		-45 (1,0) -90  no flip
+	done: going through place_explicit's in queue
+
+doing place_defer (bulges)
+doing place_defer at [62,62;185,=] InternalLoop {raw [47,48;170,170) }
+doing place_defer at [87,91;148,=] InternalLoop {raw [72,77;133,133) }
+doing place_defer at [135,138;148,=] InternalLoop {raw [120,124;133,133) }
+doing place_defer at [147,147;148,=] InternalLoop {raw [132,133;133,133) }
+doing place_defer at [172,176;185,=] InternalLoop {raw [157,162;170,170) }
+DONE PARSING: r2r-input.gsc.sto input
+solver: no-solver-found

@@ -1,0 +1,47 @@
+14:56:59:777 [INFO]  Enabled verbose mode
+14:56:59:777 [INFO]  Reseting tree IDs
+14:56:59:777 [INFO]  Extracting RNA structure from file ../results/BPw0X2UZp1JxKv8w-2683338/r2dt_out/r2r/traveler-template.xml with extractor traveler
+14:56:59:781 [INFO]  Reseting tree IDs
+14:56:59:781 [INFO]  Distances: pairs 7.55541, pairbase 12.2813, loops 7.56765, sequence 7.52169, sequence-median 7.56
+14:56:59:781 [INFO]  RNA ends (5', 3') updated
+14:56:59:782 [INFO]  BEG: APP
+14:56:59:782 [INFO]  ARGUMENTS:
+templated: 16S_rc:URS00004DD3DC_org:Escherichia.coli_600-799_Ecoli_16S_0-199.query: SUBTREE(5'3':145): 	5'3'(GC(AU(UA(GC(UG(G, A, A, A, U, C, CG(CG(CG(GU(GC(GC(C, U, C, A, A)))))), A, A, C, U))))), UA(GC(A, U, A, CG(UG(G, GU(CG(A, AU(GC(CG(U, UA(G, AU(GC(UA(CG(UA(CG(GC(UA(A, G, A, GU(GC(GC(GC(GC(GC(UG(A, G, A, A, U, UA(CG(CG(AU(GC(GU(UA(G, U, A, GC(CG(G, G, U, G, A, A, A, U)), G, U, A, G, A, G))))))), GC(GC(A, A, U, A)), G, G, U, G, GC(CG(G, A, A, G)), G))))))), G, G))), A))))), G), C))), C, A, G, G, U, GC(CG(G, A, A, A)))), G)), G, A, G)), A, A, CG(AU(GC(GC(A, U, U, A, G, A, U, A, C)))), G)
+matched: 16S_rc:URS00004DD3DC_org:Escherichia.coli_600-799_Ecoli_16S_0-199.query: SUBTREE(ROOT_2:145): 	ROOT_2(GC(AU(UA(GC(UG(G, A, A, A, U, C, CG(CG(CG(GU(GC(GC(C, U, C, A, A)))))), A, A, C, U))))), UA(GC(A, U, A, CG(UG(G, GU(CG(A, AU(GC(CG(U, UA(G, AU(GC(UA(CG(UA(CG(GC(UA(A, G, A, GU(GC(GC(GC(GC(GC(UG(A, G, A, A, U, UA(CG(CG(AU(GC(GU(UA(G, U, A, GC(CG(G, G, U, G, A, A, A, U)), G, U, A, G, A, G))))))), GC(GC(A, A, U, A)), G, G, U, G, GC(CG(G, A, A, G)), G))))))), G, G))), A))))), G), C))), C, A, G, G, U, GC(CG(G, A, A, A)))), G)), G, A, G)), A, A, CG(AU(GC(GC(A, U, U, A, G, A, U, A, C)))), G)
+all:
+	run=true
+	image-file=../results/BPw0X2UZp1JxKv8w-2683338/r2dt_out/r2r/16S_rc:URS00004DD3DC_org:Escherichia.coli_600-799_Ecoli_16S_0-199.query
+	overlaps=false
+ted:
+	run=false
+	mapping-file=
+draw:
+	run=false
+	overlaps=false
+	mapping-file=
+	image-file=otate=false
+
+14:56:59:782 [INFO]  BEG: Computing RTED between RNAs 16S_rc:URS00004DD3DC_org:Escherichia.coli_600-799_Ecoli_16S_0-199.query and 16S_rc:URS00004DD3DC_org:Escherichia.coli_600-799_Ecoli_16S_0-199.query
+14:56:59:787 [INFO]  END: Computing RTED between RNAs 16S_rc:URS00004DD3DC_org:Escherichia.coli_600-799_Ecoli_16S_0-199.query and 16S_rc:URS00004DD3DC_org:Escherichia.coli_600-799_Ecoli_16S_0-199.query
+14:56:59:787 [INFO]  BEG: Running GTED for RNAs 16S_rc:URS00004DD3DC_org:Escherichia.coli_600-799_Ecoli_16S_0-199.query and 16S_rc:URS00004DD3DC_org:Escherichia.coli_600-799_Ecoli_16S_0-199.query
+14:56:59:929 [INFO]  Computed Tree-Edit-Distance between RNAs: tdist[5'3'][ROOT_2] = 0
+14:56:59:929 [INFO]  END: Running GTED for RNAs 16S_rc:URS00004DD3DC_org:Escherichia.coli_600-799_Ecoli_16S_0-199.query and 16S_rc:URS00004DD3DC_org:Escherichia.coli_600-799_Ecoli_16S_0-199.query
+14:56:59:929 [INFO]  BEG: Computing mapping between RNAs 16S_rc:URS00004DD3DC_org:Escherichia.coli_600-799_Ecoli_16S_0-199.query and 16S_rc:URS00004DD3DC_org:Escherichia.coli_600-799_Ecoli_16S_0-199.query
+14:56:59:944 [INFO]  END: Computing mapping between RNAs 16S_rc:URS00004DD3DC_org:Escherichia.coli_600-799_Ecoli_16S_0-199.query and 16S_rc:URS00004DD3DC_org:Escherichia.coli_600-799_Ecoli_16S_0-199.query
+14:56:59:945 [INFO]  BEG: Transforming trees with mapping function
+14:56:59:945 [INFO]  Reseting tree IDs
+14:56:59:945 [INFO]  Reseting tree IDs
+14:56:59:945 [INFO]  Reseting tree IDs
+14:56:59:945 [INFO]  END: Transforming trees with mapping function
+14:56:59:945 [INFO]  BEG: Computing RNA layout for:
+SUBTREE(ROOT_2:145): 	ROOT_2(GC(AU(UA(GC(UG(G, A, A, A, U, C, CG(CG(CG(GU(GC(GC(C, U, C, A, A)))))), A, A, C, U))))), UA(GC(A, U, A, CG(UG(G, GU(CG(A, AU(GC(CG(U, UA(G, AU(GC(UA(CG(UA(CG(GC(UA(A, G, A, GU(GC(GC(GC(GC(GC(UG(A, G, A, A, U, UA(CG(CG(AU(GC(GU(UA(G, U, A, GC(CG(G, G, U, G, A, A, A, U)), G, U, A, G, A, G))))))), GC(GC(A, A, U, A)), G, G, U, G, GC(CG(G, A, A, G)), G))))))), G, G))), A))))), G), C))), C, A, G, G, U, GC(CG(G, A, A, A)))), G)), G, A, G)), A, A, CG(AU(GC(GC(A, U, U, A, G, A, U, A, C)))), G)
+14:56:59:945 [INFO]  RNA ends (5', 3') updated
+14:56:59:945 [INFO]  BEGIN: beautification
+14:56:59:945 [INFO]  RNA ends (5', 3') updated
+14:56:59:945 [INFO]  END: beautification
+14:56:59:945 [INFO]  END: Computing RNA layout
+14:56:59:945 [INFO]  BEG: Checking overlaps for RNA 16S_rc:URS00004DD3DC_org:Escherichia.coli_600-799_Ecoli_16S_0-199.query
+14:56:59:972 [INFO]  Opening document ../results/BPw0X2UZp1JxKv8w-2683338/r2dt_out/r2r/16S_rc:URS00004DD3DC_org:Escherichia.coli_600-799_Ecoli_16S_0-199.query.colored.json for writing RNA
+14:56:59:982 [INFO]  Opening document ../results/BPw0X2UZp1JxKv8w-2683338/r2dt_out/r2r/16S_rc:URS00004DD3DC_org:Escherichia.coli_600-799_Ecoli_16S_0-199.query.colored.svg for writing RNA
+14:56:59:990 [INFO]  Overlaps count: 0
+14:56:59:990 [INFO]  END: APP

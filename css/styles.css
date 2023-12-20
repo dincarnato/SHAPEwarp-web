@@ -9,6 +9,24 @@ body {
     background-color: #ecf0f1;
 }
 
+pre {
+    border: 1px solid black; 
+    background-color: #dddddd; 
+    white-space: pre-wrap; 
+    word-wrap: break-word; 
+    overflow: auto; 
+    max-width: 100%; 
+    padding: 10px;
+}
+
+img {
+    display: block; 
+    margin-left: auto; 
+    margin-right: auto; 
+    width: 800px; 
+    border: 1px solid black;
+}
+
 .page-title {
     font-family: "Orbitron", sans-serif;
     font-size: 2.5rem;
@@ -20,6 +38,14 @@ body {
 .page-title2 {
     font-size: 3.5rem;
     color: #6eb73f;
+}
+
+.content-title {
+    font-family: "Orbitron", sans-serif;
+    font-size: 2rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #000000;
 }
 
 .container {
@@ -346,8 +372,12 @@ footer {
     background-color: #cccccc;
 }
 
-.non-signif {
+.non-signif-even {
     background-color: #e6cece;
+}
+
+.non-signif-odd {
+    background-color: #d4c4c4;
 }
 
 .result-col {
