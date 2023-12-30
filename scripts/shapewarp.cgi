@@ -152,7 +152,7 @@ HTML
 
                     $cmd .= " --eval-align-fold";
                     $cmd .= " --$_ " . $params{$_} for (qw(shufflings block-size min-bp-support max-bp-span 
-                                                           align-fold-pvalue slope intercept));
+                                                           slope intercept));
                     
                     for (qw(in-block-shuffle no-lonely-pairs no-closing-gu ribosum-scoring)) {
 

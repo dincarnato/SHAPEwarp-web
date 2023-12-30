@@ -219,10 +219,10 @@
                                     <label for="max-bp-span">Max base-pair span:</label>
                                     <input type="text" id="max-bp-span" name="max-bp-span" value="600">
                                 </div>
-                                <div class="form-section">
+                               <!-- <div class="form-section">
                                     <label for="align-fold-pvalue">Folding free energy p-value:</label>
                                     <input type="text" id="align-fold-pvalue" name="align-fold-pvalue" value="0.05">
-                                </div>
+                                </div> -->
                             </div>
                             <div class="form-row">
                                 <div class="form-section">
@@ -529,10 +529,10 @@
                             showError('Max base-pair span must be an INT &ge; 10');
                         }
 
-                        if (!$.isNumeric($('#align-fold-pvalue').val()) || $('#align-fold-pvalue').val() < 0 || $('#align-fold-pvalue').val() > 1) {
-                            event.preventDefault();
-                            showError('Folding free-energy p-value must be comprised between 0 and 1');
-                        }
+                        // if (!$.isNumeric($('#align-fold-pvalue').val()) || $('#align-fold-pvalue').val() < 0 || $('#align-fold-pvalue').val() > 1) {
+                        //    event.preventDefault();
+                        //    showError('Folding free-energy p-value must be comprised between 0 and 1');
+                        // }
 
                     }
 
