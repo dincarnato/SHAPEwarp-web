@@ -7,6 +7,7 @@ use File::Path qw(mkpath);
 use JSON;
 use POSIX qw(setsid);
 
+# Change to reflect the actual path to RNA Framework's lib/
 use lib "/var/www/html/shapewarp/scripts/lib";
 
 use Core::Mathematics qw(:all);
@@ -14,14 +15,18 @@ use Core::Utils;
 use Data::Sequence::Utils;
 
 my ($cgi, $jobId, $queryDir, $queryFh, 
-    $newUrl, $msDelay, $error, $maxQueryLen,
-    $maxTotQueryLen, $swPath, $nSec, %params);
-$msDelay = 5000;
-$nSec = int($msDelay / 1000);
-$maxQueryLen = 300;
-$maxTotQueryLen = $maxQueryLen * 10;
+    $newUrl, $error, $nSec, %params,
+    %conf);
+
+%conf = ( swPath         => which("shapewarp"),
+          r2dtPath       => undef,
+          msDelay        => 5000,
+          maxQueryLen    => 500,
+          maxTotQueryLen => 5000 );
+parseConf();
+
+$nSec = int($conf{"msDelay"} / 1000);
 $queryDir = "../queries/";
-$swPath = "/usr/local/bin/shapewarp-main/target/release/shapewarp";
 $cgi = CGI->new();
 %params = map { $_ => $cgi->param($_) } $cgi->param();
 $jobId = $params{jobId} if (exists $params{jobId});
@@ -64,182 +69,200 @@ print <<HTML;
                 <div style="text-align: center;">
 HTML
 
-if (!defined $jobId) {
+if (!defined $conf{"swPath"} || 
+    (exists $params{"eval-align-fold"} && $params{"eval-align-fold"} eq "on" && !defined $conf{"r2dtPath"})) {
 
-    if (exists $params{database}) {
-    
-        my ($query, $totLen, $nQueries);
-        $jobId = randalphanum(16);
-        $queryFh = $cgi->upload("fileInput");
+    $error = !defined $conf{"swPath"} ? "SHAPEwarp executable not found." : "R2DT Singularity image not found.";
 
-        if (defined $queryFh) { while (<$queryFh>) { $query .= $_; } }
-        elsif (exists $params{"query"} && defined $params{"query"}) { $query = $params{"query"}; }
-
-        ($query, $totLen, $nQueries, $error) = validateQuery($query);
-
-        if ($error) {
-
-            print <<HTML;
+    print <<HTML;
                         <h1 class="page-title" style="color: black; font-size: 2em;">
                             <span class="page-title2">Error</span><br/>
                             $error
                         </h1>
+                        <p>Please check the configuration file.</p>
                         <p><a href="../index.html">Go back to the homepage</a></p>
 HTML
-
-        } 
-        else {
-
-            if (my $pid = fork()) {
-
-                $jobId .= "-$pid";
-                $newUrl = "shapewarp.cgi?jobId=$jobId";
-                
-                print <<HTML;
-                
-                <p>Your job has been successfully submitted (Job ID: <strong>$jobId</strong>)</p>
-                <p>Submitted queries: <strong>$nQueries</strong>, Total query length: <strong>$totLen</strong></p>
-                <p>Please wait, this page will automatically refresh in <strong>$nSec</strong> seconds...</p>
-HTML
-
-            }
-            else { # Here we will call the SHAPEwarp process in the background
-
-                my ($queryFile, $dbDir, $outDir, $cmd);
-                $jobId .= "-$$";
-                $queryFile = $queryDir . $jobId . ".query.txt";
-                $dbDir = "../databases/" . $params{"database"} . "/reactivity";
-                $outDir = "../results/$jobId/";
-
-                open(my $fh, ">", $queryFile);
-                print $fh $query . "\n";
-                close($fh);
-
-                $cmd = $swPath . " --query $queryFile --database $dbDir.db";
-                $cmd .= -e "$dbDir.shuffled.db" ? " --shuffled-db $dbDir.shuffled.db" :
-                                                  " --dump-shuffled-db $dbDir.shuffled.db";
-                $cmd .= " --output $outDir --overwrite --threads " . optimalThreadN();
-                $cmd .= " --report-alignment s --report-reactivity";
-                
-                $cmd .= " --$_ " . $params{$_} for (qw(inclusion-evalue report-evalue kmer-len kmer-min-complexity min-kmers
-                                                       kmer-offset kmer-max-match-every-nt max-kmer-dist null-hsgs 
-                                                       align-mismatch-score align-len-tolerance align-gap-ext-penalty 
-                                                       align-match-score align-max-drop-off-rate align-gap-open-penalty 
-                                                       max-reactivity max-align-overlap));
-
-                if (exists $params{"match-kmer-gc-content"} && $params{"match-kmer-gc-content"} eq "on") {
-
-                    $cmd .= " --match-kmer-gc-content";
-                    $cmd .= " --kmer-max-gc-diff " . $params{"kmer-max-gc-diff"} if (lc($params{"kmer-max-gc-diff"}) ne "auto");
-
-                }
-
-                if (exists $params{"match-kmer-seq"} && $params{"match-kmer-seq"} eq "on") {
-
-                    $cmd .= " --match-kmer-seq";
-                    $cmd .= " --kmer-max-seq-dist " . $params{"kmer-max-seq-dist"};
-
-                }
-
-                if (exists $params{"align-score-seq"} && $params{"align-score-seq"} eq "on") {
-
-                    $cmd .= " --align-score-seq";
-                    $cmd .= " --$_ " . $params{$_} for (qw(align-seq-match-score align-seq-mismatch-score));
-
-                }
-
-                if (exists $params{"eval-align-fold"} && $params{"eval-align-fold"} eq "on") {
-
-                    $cmd .= " --eval-align-fold";
-                    $cmd .= " --$_ " . $params{$_} for (qw(shufflings block-size min-bp-support max-bp-span 
-                                                           slope intercept));
-                    
-                    for (qw(in-block-shuffle no-lonely-pairs no-closing-gu ribosum-scoring)) {
-
-                        $cmd .= " --$_" if (exists $params{$_} && $params{$_} eq "on");
-
-                    }
-
-                }
-
-                # Detaches the process
-                setsid();
-                fork() and exit();
-
-                my ($stdout, $stderr);
-                $stdout = "../logs/$jobId.stdout.txt";
-                $stderr = "../logs/$jobId.stderr.txt";
-
-                open(STDIN, "<", "/dev/null");
-                open(STDOUT, ">", $stdout);
-                open(STDERR, ">", $stderr);
-
-                # Runs SHAPEwarp
-                system($cmd);
-
-                if (exists $params{"eval-align-fold"} && $params{"eval-align-fold"} eq "on") {
-
-                    mkpath($outDir . "r2dt_input/", { mode => 0755 });
-                    mkpath($outDir . "r2dt_out/results/json/svg/", { mode => 0755 });
-
-                    # R2DT has some issue with paths. We need to place everything in the same dir to work
-                    copy("colorscheme.json", $outDir . "r2dt_out/results/json/");
-
-                    makeR2dtInputFiles();
-                    makeR2dtStructPlots();
-
-                }
-
-                unlink($stdout) if (!-s $stdout);
-                unlink($stderr) if (!-s $stderr);
-
-                open(my $wh, ">", $outDir . "done.out");
-                print $wh scalar(localtime());
-                close($wh);
-
-                exit();
-
-            }
-
-        }
-
-    }
-    else {
-
-        $newUrl = "../index.html";
-        $msDelay = 0;
-
-    }
 
 }
 else {
 
-    if (-e "../results/$jobId/done.out") {
+    if (!defined $jobId) {
 
-        $newUrl = "results.cgi?jobId=$jobId";
-        $msDelay = 0;
+        if (exists $params{database}) {
+        
+            my ($query, $totLen, $nQueries);
+            $jobId = randalphanum(16);
+            $queryFh = $cgi->upload("fileInput");
+
+            if (defined $queryFh) { while (<$queryFh>) { $query .= $_; } }
+            elsif (exists $params{"query"} && defined $params{"query"}) { $query = $params{"query"}; }
+
+            ($query, $totLen, $nQueries, $error) = validateQuery($query);
+
+            if ($error) {
+
+                print <<HTML;
+                            <h1 class="page-title" style="color: black; font-size: 2em;">
+                                <span class="page-title2">Error</span><br/>
+                                $error
+                            </h1>
+                            <p><a href="../index.html">Go back to the homepage</a></p>
+HTML
+
+            } 
+            else {
+
+                if (my $pid = fork()) {
+
+                    $jobId .= "-$pid";
+                    $newUrl = "shapewarp.cgi?jobId=$jobId";
+                    
+                    print <<HTML;
+                    
+                    <p>Your job has been successfully submitted (Job ID: <strong>$jobId</strong>)</p>
+                    <p>Submitted queries: <strong>$nQueries</strong>, Total query length: <strong>$totLen</strong></p>
+                    <p>Please wait, this page will automatically refresh in <strong>$nSec</strong> seconds.<br/>If it does not refresh automatically, click <a href="$newUrl"><strong>here</strong></a>.</p>
+HTML
+
+                }
+                else { # Here we will call the SHAPEwarp process in the background
+
+                    my ($queryFile, $dbDir, $outDir, $cmd);
+                    $jobId .= "-$$";
+                    $queryFile = $queryDir . $jobId . ".query.txt";
+                    $dbDir = "../databases/" . $params{"database"} . "/reactivity";
+                    $outDir = "../results/$jobId/";
+
+                    open(my $fh, ">", $queryFile);
+                    print $fh $query . "\n";
+                    close($fh);
+
+                    $cmd = $conf{"swPath"} . " --query $queryFile --database $dbDir.db";
+                    $cmd .= -e "$dbDir.shuffled.db" ? " --shuffled-db $dbDir.shuffled.db" :
+                                                    " --dump-shuffled-db $dbDir.shuffled.db";
+                    $cmd .= " --output $outDir --overwrite --threads " . optimalThreadN();
+                    $cmd .= " --report-alignment s --report-reactivity";
+                    
+                    $cmd .= " --$_ " . $params{$_} for (qw(inclusion-evalue report-evalue kmer-len kmer-min-complexity min-kmers
+                                                        kmer-offset kmer-max-match-every-nt max-kmer-dist null-hsgs 
+                                                        align-mismatch-score align-len-tolerance align-gap-ext-penalty 
+                                                        align-match-score align-max-drop-off-rate align-gap-open-penalty 
+                                                        max-reactivity max-align-overlap));
+
+                    if (exists $params{"match-kmer-gc-content"} && $params{"match-kmer-gc-content"} eq "on") {
+
+                        $cmd .= " --match-kmer-gc-content";
+                        $cmd .= " --kmer-max-gc-diff " . $params{"kmer-max-gc-diff"} if (lc($params{"kmer-max-gc-diff"}) ne "auto");
+
+                    }
+
+                    if (exists $params{"match-kmer-seq"} && $params{"match-kmer-seq"} eq "on") {
+
+                        $cmd .= " --match-kmer-seq";
+                        $cmd .= " --kmer-max-seq-dist " . $params{"kmer-max-seq-dist"};
+
+                    }
+
+                    if (exists $params{"align-score-seq"} && $params{"align-score-seq"} eq "on") {
+
+                        $cmd .= " --align-score-seq";
+                        $cmd .= " --$_ " . $params{$_} for (qw(align-seq-match-score align-seq-mismatch-score));
+
+                    }
+
+                    if (exists $params{"eval-align-fold"} && $params{"eval-align-fold"} eq "on") {
+
+                        $cmd .= " --eval-align-fold";
+                        $cmd .= " --$_ " . $params{$_} for (qw(shufflings block-size min-bp-support max-bp-span 
+                                                            slope intercept));
+                        
+                        for (qw(in-block-shuffle no-lonely-pairs no-closing-gu ribosum-scoring)) {
+
+                            $cmd .= " --$_" if (exists $params{$_} && $params{$_} eq "on");
+
+                        }
+
+                    }
+
+                    # Detaches the process
+                    setsid();
+                    fork() and exit();
+
+                    my ($stdout, $stderr);
+                    $stdout = "../logs/$jobId.stdout.txt";
+                    $stderr = "../logs/$jobId.stderr.txt";
+
+                    open(STDIN, "<", "/dev/null");
+                    open(STDOUT, ">", $stdout);
+                    open(STDERR, ">", $stderr);
+
+                    # Runs SHAPEwarp
+                    system($cmd);
+
+                    if (exists $params{"eval-align-fold"} && $params{"eval-align-fold"} eq "on") {
+
+                        mkpath($outDir . "r2dt_input/", { mode => 0755 });
+                        mkpath($outDir . "r2dt_out/results/json/svg/", { mode => 0755 });
+
+                        # R2DT has some issue with paths. We need to place everything in the same dir to work
+                        copy("colorscheme.json", $outDir . "r2dt_out/results/json/");
+
+                        makeR2dtInputFiles();
+                        makeR2dtStructPlots();
+
+                    }
+
+                    unlink($stdout) if (!-s $stdout);
+                    unlink($stderr) if (!-s $stderr);
+
+                    open(my $wh, ">", $outDir . "done.out");
+                    print $wh scalar(localtime());
+                    close($wh);
+
+                    exit();
+
+                }
+
+            }
+
+        }
+        else {
+
+            $newUrl = "../index.html";
+            $conf{"msDelay"} = 0;
+
+        }
 
     }
     else {
 
-        my $pid = (split /-/, $jobId)[1];
-
-        if (!defined $pid || !isint($pid) || !-e "../results/$jobId/") {
+        if (-e "../results/$jobId/done.out") {
 
             $newUrl = "results.cgi?jobId=$jobId";
-            $msDelay = 0;
+            $conf{"msDelay"} = 0;
 
         }
+        else {
 
-        print <<HTML;
-                <p>
-                    This page will automatically refresh every <strong>$nSec</strong> seconds.
+            my $pid = (split /-/, $jobId)[1];
+
+            if (!defined $pid || !isint($pid) || !-e "../results/$jobId/") {
+
+                $newUrl = "results.cgi?jobId=$jobId";
+                $conf{"msDelay"} = 0;
+            }
+
+            print <<HTML;
+                    <p>
+                        This page will automatically refresh every <strong>$nSec</strong> seconds.
+                        <br/>
+                        Please wait, or bookmark it to retrieve your search results later.
+                    </p>
                     <br/>
-                    Please wait, or bookmark it to retrieve your search results later.
-                </p>
-                <br/>
-                <div class="lds-ellipsis"><div></div><div></div><div></div></div>
+                    <div class="lds-ellipsis"><div></div><div></div><div></div></div>
 HTML
+
+        }
 
     }
 
@@ -262,7 +285,7 @@ HTML
 print <<HTML if (!$error);
 
         \$(document).ready(function(){
-            var msDelay = $msDelay;
+            var msDelay = $conf{"msDelay"};
 
             setTimeout(function() {
                 window.location.href = "$newUrl";
@@ -292,7 +315,7 @@ sub validateQuery {
         if (exists $ids{$query[$i]}) { $errMsg = "Duplicate query ID \"<strong>$query[$i]</strong>\""; }
         elsif (@query < $i + 3) { $errMsg = "Truncated or malformed query"; }
         elsif (!isna($query[$i + 1])) { $errMsg = "Sequence for query \"<strong>$query[$i]</strong>\" contains invalid charaters"; }
-        elsif (length($query[$i + 1]) > $maxQueryLen) { $errMsg = "Query \"<strong>$query[$i]</strong>\" exceeds the server limit of $maxQueryLen nt"; }
+        elsif (length($query[$i + 1]) > $conf{"maxQueryLen"}) { $errMsg = "Query \"<strong>$query[$i]</strong>\" exceeds the server limit of " . $conf{"maxQueryLen"} . " nt"; }
         else {
 
             my @reactivity = split /,/, $query[$i + 2];
@@ -314,7 +337,7 @@ sub validateQuery {
 
         }
 
-        $errMsg = "Queries exceed the server limit of $maxTotQueryLen nt" if ($totLen > $maxTotQueryLen);
+        $errMsg = "Queries exceed the server limit of " . $conf{"maxTotQueryLen"} . " nt" if ($totLen > $conf{"maxTotQueryLen"});
 
         last if ($errMsg);
 
@@ -329,7 +352,7 @@ sub validateQuery {
 sub optimalThreadN {
 
     my ($running, $nCores);
-    $running = `ps -ax | grep '$swPath' |grep -v 'grep' |wc -l`;
+    $running = `ps -ax | grep '$conf{"swPath"}' | grep -v 'grep' | wc -l`;
     $running =~ s/\s//g;
     $running //= $running - 1;
 
@@ -424,7 +447,6 @@ sub makeR2dtStructPlots {
     $r2dtDir = $outDir . "r2dt_out/";
     $tsvDir = $r2dtDir . "/results/json/";
 
-
     opendir(my $dh, $fastaDir);
     while(my $file = readdir($dh)) {
 
@@ -433,11 +455,42 @@ sub makeR2dtStructPlots {
         my $baseName = $file;
         $baseName =~ s/\.fasta$//;
 
-        system("singularity exec /etc/r2dt r2dt.py templatefree $fastaDir/$file $r2dtDir");
-        system("cd $tsvDir && singularity exec /etc/r2dt python3 /rna/traveler/utils/enrich_json.py --input-json $baseName.colored.json --input-data $baseName.tsv --output $baseName.json");
-        system("cd $tsvDir && singularity exec /etc/r2dt python3 /rna/traveler/utils/json2svg.py -p colorscheme.json -i $baseName.json -o svg/$baseName.svg");
+        system("singularity exec " . $conf{"r2dtPath"} . " r2dt.py templatefree $fastaDir/$file $r2dtDir");
+        system("cd $tsvDir && singularity exec " . $conf{"r2dtPath"} . " python3 /rna/traveler/utils/enrich_json.py --input-json $baseName.colored.json --input-data $baseName.tsv --output $baseName.json");
+        system("cd $tsvDir && singularity exec " . $conf{"r2dtPath"} . " python3 /rna/traveler/utils/json2svg.py -p colorscheme.json -i $baseName.json -o svg/$baseName.svg");
 
     }
     closedir($dh);
+
+}
+
+sub parseConf {
+    
+    if (-e "../shapewarp.conf") {
+
+        open(my $fh, "<", "../shapewarp.conf");
+        while(<$fh>) {
+
+            chomp;
+
+            next if (/^#/);
+            s/^\s+|\s+$//g;
+
+            my ($param, $value) = split /=/;
+
+            if (exists $conf{$param}) {
+
+                if (($param eq "swPath" && -e $value && -x $value) ||
+                    ($param eq "r2dtPath" && -e $value && -x $value) ||
+                    ($param eq "msDelay" && isint($value) && ispositive($value)) ||
+                    ($param eq "maxQueryLen" && isint($value) && $value >= 50) ||
+                    ($param eq "maxTotQueryLen" && isint($value) && $value >= 50)) { $conf{$param} = $value; }
+
+            }
+
+        }
+        close($fh);
+
+    }
 
 }

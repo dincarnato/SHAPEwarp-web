@@ -4,6 +4,7 @@ use strict;
 use CGI;
 use JSON;
 
+# Change to reflect the actual path to RNA Framework's lib/
 use lib "/var/www/html/shapewarp/scripts/lib";
 
 use Core::Mathematics qw(:all);
@@ -112,7 +113,10 @@ HTML
         <section id="main-content">
             <div class="container">
                 <section id="results">
-                    <p style="text-align: center; margin-bottom: 50px; line-height: 25px;">Results for Job ID: <strong>$jobId</strong><br/>[Completed on: $date]</p>
+                    <p style="text-align: center; margin-bottom: 50px; line-height: 25px;">
+                        Results for Job ID: <strong>$jobId</strong><br/>[Completed on: $date]<br/><br/>
+                        Download full <a href="../results/$jobId/results.out" download>results table</a>
+                    </p>
                     <div id="result-container" class="result-container">
 HTML
 
@@ -547,11 +551,11 @@ HTML
 							<table>
                                 <tr>
                                     <td class="detail-col-1">Alignment (Stockholm):</td>
-                                    <td><a href="../results/$jobId/alignments/$baseName.sto">$baseName.sto</a></td>
+                                    <td><a href="../results/$jobId/alignments/$baseName.sto" download>$baseName.sto</a></td>
                                 </tr>
                                 <tr>
                                     <td class="detail-col-1">Reactivities (JSON):</td>
-                                    <td><a href="../results/$jobId/reactivities/$baseName.json">$baseName.json</a></td>
+                                    <td><a href="../results/$jobId/reactivities/$baseName.json" download>$baseName.json</a></td>
                                 </tr>
 HTML
 
@@ -560,11 +564,11 @@ HTML
                     print <<HTML;
                                 <tr>
                                     <td class="detail-col-1">Query structure plot (SVG):</td>
-                                    <td><a href="../results/$jobId/r2dt_out/results/json/svg/$baseName.query.svg">$baseName.query.svg</a></td>
+                                    <td><a href="../results/$jobId/r2dt_out/results/json/svg/$baseName.query.svg" download>$baseName.query.svg</a></td>
                                 </tr>
                                 <tr>
                                     <td class="detail-col-1">Match structure plot (SVG):</td>
-                                    <td><a href="../results/$jobId/r2dt_out/results/json/svg/$baseName.db.svg">$baseName.db.svg</a></td>
+                                    <td><a href="../results/$jobId/r2dt_out/results/json/svg/$baseName.db.svg" download>$baseName.db.svg</a></td>
                                 </tr>
 HTML
 
@@ -599,9 +603,10 @@ sub parseMatchId {
 
     my ($id, $accession, $organism);
 
-    foreach my $field (split(/_/, $matchId)) {
+    foreach my $field (split(/(?<=[^\\])_/, $matchId)) {
 
         my ($url);
+        $field =~ s/\\//g;
 
         if ($field =~ /^rc\:(.+?)$/) { $url = "https://rnacentral.org/rna/$1/"; }
         elsif ($field =~ /^gb\:(.+?)$/) { $url = "https://www.ncbi.nlm.nih.gov/nuccore/$1"; }
