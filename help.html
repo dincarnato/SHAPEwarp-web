@@ -36,7 +36,14 @@
                     The approach used by SHAPEwarp is inspired by the <a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi">BLAST</a> 
                     algorithm and builds on top of two widely used methods for similarity search in time series data: Mueen's 
                     Algorithm for Similarity Search (<a href="https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html">MASS</a>) 
-                    and dynamic time warping (<a href="https://en.wikipedia.org/wiki/Dynamic_time_warping">DTW</a>).
+                    and dynamic time warping (<a href="https://en.wikipedia.org/wiki/Dynamic_time_warping">DTW</a>).<br/><br/>
+                    Briefly, SHAPEwarp identifies ungapped groups of short segments (<i>High Scoring Groups</i>, or <i>HSGs</i>) 
+                    showing highly similar reactivity profiles between a query and a target RNA. Each HSG serves as a seed from 
+                    which the alignment is bidirectionally extended using a banded semi-global alignment algorithm that incorporates 
+                    both features of the Gotoh’s Smith-Waterman algorithm with affine gap penalties and of DTW.<br/>
+                    By default, the alignment solely relies on the reactivity profiles, although sequence can be optionally considered 
+                    (see below <a href="#search-parameters"><strong>Search parameters</strong></a> and 
+                    <a href="#understanding-search-parameters"><strong>Understanding search parameters</strong></a>). 
                 </p>
                 <p>
                     For a complete description of the algorithm, please refer to the original publication:<br/><br/>
@@ -77,6 +84,131 @@ GATGTGAAATCCCCGGGCTCAACCTGGGAACTGCATCTGATACTGGCAAGCTTGAGTCTCGTAGAGGGGGGTAGAATTCC
                     "<strong>Load sample query</strong>", then click "<strong>Submit</strong>" (see below):
                     <br/><br/>
                     <img src="images/test_run.png" alt="Test run"/>
+                </p>
+                <br/>
+                <h1 class="content-title" id="search-parameters">Search parameters</h1>
+                <p>
+                    Below is a complete list and description of SHAPEwarp's parameters. To better understand how each parameter is used,
+                    check the next section <a href="#understanding-search-parameters"><strong>Understanding search parameters</strong></a>.
+                </p>
+                <br/>
+                <p>
+                    <ul>
+                        <strong><u>Basic options</u></strong>
+                        <br/><br/>
+                        <ul>
+                            <li><strong>Inclusion E-value</strong>. Matches having E-value &lt; this threshold are considered to be significant</li>
+                            <li>
+                                <strong>Report E-value</strong>. Matches having E-value &ge; <strong>Inclusion E-value</strong> and &lt; this threshold are reported,
+                                but no details (such as sequence/reactivity alignments, nor consensus structure) are reported
+                            </li>
+                            <li>
+                                <strong>Evaluate alignment folding</strong>. When this option is enabled, matches having E-value &lt; <strong>Inclusion E-value</strong> 
+                                are analyzed using <a href="https://www.tbi.univie.ac.at/RNA/RNAalifold.1.html">RNAalifold</a> to derive a consensus structure for the match
+                                alignment (<strong>Note:</strong> this operation can increase the computation time)
+                            </li>
+                        </ul>
+                        <br/><br/>
+                        <strong><u>Advanced options</u></strong>
+                        <br/><br/>
+                        <li><strong>General</strong></li>
+                        <br/>
+                        <ul>
+                            <li><strong>Max reactivity</strong>. Maximum value to which reactivities will be capped</li>
+                            <li><strong>Max alignment overlap</strong>. If two significant alignments overlap by more than this value, the least significant one (the one with the lowest alignment score) will be discarded</li>
+                            <li><strong>Null HSGs</strong>. Maximum number of HSGs in the shuffled database to be extended to build the null model</li>
+                        </ul>
+                        <br/><br/>
+                        <li><strong>Kmer lookup</strong></li>
+                        <br/>
+                        <ul>
+                            <li><strong>Min kmers</strong>. Minimum number of kmers required to form a High Scoring Group</li>
+                            <li><strong>Max kmer distance</strong>. Maximum distance between two kmers to be merged in a HSG</li>
+                            <li><strong>Kmer length</strong>. Length (in nt) of the kmers</li>
+                            <li><strong>Kmer offset</strong>. Sliding offset (in nt) for extracting candidate kmers from the query</li>
+                            <li><strong>Min kmer complexity</strong>. Minimum complexity (measured as Gini coefficient) of candidate kmers</li>
+                            <li><strong>Kmer max match every nt</strong>. A kmer is allowed to match a database entry on average every this many nt</li>
+                            <li><strong>Match kmer GC content</strong>. The sequence of a query kmer and the corresponding database match must have GC% contents differing no more than <strong>Kmer max GC difference</strong></li>
+                            <li><strong>Kmer max GC difference</strong>. Maximum allowed GC% difference to retain a kmer match</li>
+                            <li><strong>Match kmer sequence</strong>. The sequence of a query kmer and the corresponding database match must differ no more than <strong>Kmer max sequence distance</strong></li>
+                            <li>
+                                <strong>Kmer max sequence distance</strong>. Maximum allowed sequence distance to retain a kmer match. When &ge; 1, this is interpreted as the absolute number of bases that are allowed to differ 
+                                between the kmer and the matching region. When &lt; 1, this is interpreted as a fraction of the kmer's length
+                            </li>
+                        </ul>
+                        <br/><br/>
+                        <li><strong>Alignment</strong></li>
+                        <br/>
+                        <ul>
+                            <li><strong>Match score</strong>. Minimum and maximum score reactivity differences below 0.5 will be mapped to</li>
+                            <li><strong>Mismatch score</strong>. Minimum and maximum score reactivity differences above 0.5 will be mapped to </li>
+                            <li><strong>Gap open penalty</strong>. Penalty for opening a gap</li>
+                            <li><strong>Gap extension penalty</strong>. Penalty for extending a gap</li>
+                            <li><strong>Max drop-off rate</strong>. An alignment is allowed to drop by maximum this fraction of the best score encountered so far, before extension is interrupted </li>
+                            <li><strong>Max drop-off bases</strong>. An alignment is allowed to drop below the best score encountered so far &times; <strong>Max drop-off rate</strong> by this number of bases, before extension is interrupted</li>
+                            <li><strong>Length difference tolerance</strong>. The maximum allowed tollerated length difference between the query and db sequences to look for the ideal alignment along the diagonal (measured as a fraction of the length of the shortest sequence between the db and the query)</li>
+                            <li><strong>Score sequence</strong>. Sequence will be also considered during the alignment</li>
+                            <li><strong>Sequence match score</strong>. Score reward for matching bases</li>
+                            <li><strong>Sequence mismatch score</strong>. Score penalty for mismatching bases</li>
+                        </ul>
+                        <br/><br/>
+                        <li><strong>Folding evaluation</strong></li>
+                        <br/>
+                        <ul>
+                            <li><strong>Shufflings</strong>. Number of shufflings to perform for each alignment</li>
+                            <li><strong>Block size</strong>. Size (in nt) of the blocks for shuffling the alignment</li>
+                            <li><strong>In-block shuffle</strong>. Besides shuffling blocks, residues within each block will be shuffled as well</li>
+                            <li><strong>Min base-pair support</strong>. Minimum fraction of base-pairs of the RNAalifold-inferred structure that should be supported by both query and matched database sequence to retain a match</li>
+                            <li><strong>Max base-pair span</strong>. Maximum allowed base-pairing distance in the consensus structure</li>
+                            <li><strong>Slope</strong>. Slope for SHAPE reactivities conversion into pseudo-free energy contributions</li>
+                            <li><strong>Intercept</strong>. Intercept for SHAPE reactivities conversion into pseudo-free energy contributions</li>
+                            <li><strong>No lonely pairs</strong>. Disallows lonely pairs (helices of 1 bp) in the consensus structure</li>
+                            <li><strong>No closing GU</strong>. Dissalows G:U wobbles at the end of helices in the consensus structure</li>
+                            <li><strong>RIBOSUM scoring</strong>. Use RIBOSUM scoring matrix (please refer to the <a href="https://www.tbi.univie.ac.at/RNA/RNAalifold.1.html">RNAalifold manual</a> for details)</li>
+                        </ul>
+                    </ul>
+                </p>
+                <br/>
+                <h1 class="content-title" id="understanding-search-parameters">Understanding search parameters</h1>
+                <p>
+                    While it is advisable for most users to run SHAPEwarp with its default parameters, as these are the results of a careful 
+                    and thorough calibration, it might be useful to adjust the analysis on a case-by-case basis.<br/><br/>
+                    First of all, as SHAPE reactivities can have a variable range, depending on the adopted <a href="https://rnaframework-docs.readthedocs.io/en/latest/rf-norm/#normalization-of-raw-reactivities">normalization scheme</a>, 
+                    both query and database reactivities are capped to a maximum value of <strong>Max reactivity</strong>. 
+                    During the <i>kmer lookup</i> phase, the algorithm enumerates all the possible kmers of size <strong>Kmer length</strong> in the user-provided query, filtering out those:<br/><br/>
+                    <strong>1.</strong> encompassing <i>NaN</i> values<br/>
+                    <strong>2.</strong> having Gini coefficient &lt; <strong>Min kmer complexity</strong>, corresponding to regions of low structural complexity (expected to match most transcripts)<br/><br/>
+                    Kmers are matched against the database using the <a href="https://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html">MASS</a> algorithm. Given a kmer and a database reactivity profile, 
+                    MASS returns an array of distances of that kmer to each position of the database profile. Matches having a distance &lt; &mu; - 3 &times; &sigma;, where &mu; and &sigma; are respectively 
+                    the mean and the standard deviation of the distances, are retained. Kmer-match pairs are then filtered out on the basis of the following criteria:<br/><br/>
+                    <strong>1.</strong> when <strong>Match kmer GC content</strong> is enabled and the difference between the GC% content of the kmer and that of its database match is &gt; <strong>Kmer max GC difference</strong><br/>
+                    <strong>2.</strong> when <strong>Match kmer sequence</strong> is enabled and the sequence of the kmer and that of its database match differ by more than <strong>Kmer max sequence distance</strong><br/>
+                    <strong>3.</strong> when the ratio between the length of the database transcript and the number of matches for a given kmer in that transcript is &lt; <strong>Kmer max match every nt</strong><br/>
+                    The retained kmers are then grouped into high-scoring groups (HSGs). HSGs are made of kmers residing on the same diagonal (so, corresponding to regions of the query and database that can be theoretically aligned 
+                    without opening gaps). Each HSG is made of &ge; <strong>Min kmers</strong>, residing within a maximum distance of <strong>Max kmer distance</strong> from each other.<br/><br/>
+                    Each HSG constitutes the <i>seed</i> from which an alignment extension will be attempted, both upstream and downstream. The <i>seed extension</i> uses a dynamic programming algorithm that incorporates features 
+                    of both dynamic time warping (DTW) and of Gotoh's Smith-Waterman implementation with affine gap penalties. In brief, if the reactivity difference between two bases is &lt; 0.5, the corresponding alignment score 
+                    is calculated by linearly mapping the reactivity difference to the <strong>Match score</strong> range. Similarly, if the reactivity difference is &ge; 0.5, the corresponding alignment score is calculated by 
+                    linearly mapping the reactivity difference to the <strong>Mismatch score</strong> range. Affine gap penalties are controlled via the <strong>Gap open penalty</strong>, the gap open penalty, and <strong>Gap extension penalty</strong>, 
+                    the gap extension penalty. During the matrix-filling stage of the algorithm, the alignment score is allowed to drop by not more than <strong>Max drop-off rate</strong> &times; the best alignment score encountered so far, 
+                    for no more than <strong>Max drop-off bases</strong>. While the algorithm is sequence-agnostic by default, sequence can be optionally taken into account by enabling the <strong>Score sequence</strong> option. 
+                    When enabled, sequence matches are rewarded by <strong>Sequence match score</strong> and mismatches are penalized by <strong>Sequence mismatch score</strong>. To further speed-up the alignment phase, 
+                    the alignment matrix is only filled in a band of size <i>b</i> around the diagonal, where <i>b</i> is defined as min(10, <strong>Length difference tolerance</strong> &times; min(<i>q</i>, <i>d</i>)), where <i>q</i> and 
+                    <i>d</i> are respectively the length of the query and of the database entry. Therefore, a minimum band size of 10 nt is always granted. The final alignment score <i>S</i> is calculated as the sum of the scores of the HSG 
+                    (the <i>seed</i>), plus the two upstream and downstream extensions.<br/><br/>
+                    After having extended any possible HSG in the database, the same procedure is repeated by searching the query in a database of shuffled reactivity profiles. A maximum of <strong>Null HSGs</strong> HSGs identified in the shuffled 
+                    database are extended, and the resulting alignment scores are used to build the null model, hence allowing to calculate a <i>p-value</i> for each alignment from the real database. The <i>p-value></i> is the probability of 
+                    identifying by chance a match having a score &ge; <i>S</i>. The <i>E-value</i> corresponds to the number of expected database matches having a score &ge; <i>S</i> and it is thus calculated as <i>p-value</i> &times; the number of extended HSGs. 
+                    It might happen, especially with long queries, that multiple HSGs will be identified for the same query-database entry pair, hence resulting in multiple overlapping alignments. To prevent duplicate matches from being reported, 
+                    if multiple alignments overlap by more than <strong>Max alignment overlap</strong>, only the one with the lowest E-value is reported.<br/><br/>
+                    Optionally, if the <strong>Evaluate alignment folding</strong> option is enabled, alignments passing the <strong>Inclusion E-value</strong> cutoff can be evaluated for the presence of a consensus secondary structure, via <a href="https://www.tbi.univie.ac.at/RNA/RNAalifold.1.html">RNAalifold</a>. 
+                    RNAalifold uses both the sequence alignment and the corresponding SHAPE reactivity information. SHAPE reactivities are converted into pseudo free energy contributions by using the approach from <a href="https://pubmed.ncbi.nlm.nih.gov/19109441/">Deigan *et al.*, 2009</a>, where:<br/><br/>
+                    &#916;G<sub>SHAPE</sub>(<i>i</i>) = <strong>Slope</strong> &middot; ln[Reactivity(<i>i</i>) + 1] + <strong>Intercept</strong>
+                    <br/><br/>
+                    Pre-defined <strong>Slope</strong>/<strong>Intercept</strong> value pairs are available for standard SHAPE reagents.<br/>
+                    If &lt; than <strong>Min base-pair support</strong> base-pairs from the predicted consensus structure are supported for either of the two aligned RNAs, the match is discarded. Furthermore, the probability of predicting a structure with a free 
+                    energy &le; to that of the consensus structure inferred from the alignment is evaluated by randomly shuffling <strong>Shufflings</strong> times the columns of the original alignment in <strong>Block size</strong>-long blocks, followed by RNAalifold analysis. 
+                    A z-score is calculated and the corresponding <i>p-value</i> determined. If the <i>p-value</i> is &lt; 0.05, the alignment and the inferred structure are reported.<br/>
                 </p>
                 <br/>
                 <h1 class="content-title">SHAPEwarp results</h1>

@@ -4,7 +4,6 @@ use strict;
 use CGI;
 use JSON;
 
-# Change to reflect the actual path to RNA Framework's lib/
 use lib "/var/www/html/shapewarp/scripts/lib";
 
 use Core::Mathematics qw(:all);
@@ -381,9 +380,11 @@ HTML
         else {
 
             my ($type, $id, $organism, $accession, 
-                $baseName, $aln, $qSeq, $dSeq, @row);
+                $baseName, $aln, $qSeq, $dSeq, @row,
+                @oneBasedCoords);
             $n++;
             @row = split /\t/;
+            @oneBasedCoords = map { $_ + 1 } (@row[2 .. 5], split(/-/, $row[6]), split(/-/, $row[7]));
             $baseName = join("_", $row[1], join("-", @row[4,5]), $row[0], join("-", @row[2,3]));
             $_ = formatValue($_) for (@row[8..10]);
             ($id, $accession, $organism) = parseMatchId($row[1]);
@@ -450,27 +451,27 @@ HTML
                                 </tr>
                                 <tr>
                                     <td class="detail-col-1">Query<sub>Start</sub></td>
-                                    <td>$row[2]</td>
+                                    <td>$oneBasedCoords[0]</td>
                                 </tr>
                                 <tr>
                                     <td class="detail-col-1">Query<sub>End</sub></td>
-                                    <td>$row[3]</td>
+                                    <td>$oneBasedCoords[1]</td>
                                 </tr>
                                 <tr>
                                     <td class="detail-col-1">Match<sub>Start</sub></td>
-                                    <td>$row[4]</td>
+                                    <td>$oneBasedCoords[2]</td>
                                 </tr>
                                 <tr>
                                     <td class="detail-col-1">Match<sub>End</sub></td>
-                                    <td>$row[5]</td>
+                                    <td>$oneBasedCoords[3]</td>
                                 </tr>
                                 <tr>
                                     <td class="detail-col-1">Query<sub>Seed</sub></td>
-                                    <td>$row[6]</td>
+                                    <td>$oneBasedCoords[4]-$oneBasedCoords[5]</td>
                                 </tr>
                                 <tr>
                                     <td class="detail-col-1">Match<sub>Seed</sub></td>
-                                    <td>$row[7]</td>
+                                    <td>$oneBasedCoords[6]-$oneBasedCoords[7]</td>
                                 </tr>
                                 <tr>
                                     <td class="detail-col-1">P-value</td>
@@ -684,8 +685,8 @@ sub importStockholm {
             @qCoords, @dCoords);
         $query = substr($seq{query}, 0, $maxAlnRowLen);
         $db = substr($seq{db}, 0, $maxAlnRowLen);
-        @qCoords = ($qStart, $qStart + $maxAlnRowLen - 1);
-        @dCoords = ($dStart, $dStart + $maxAlnRowLen - 1);
+        @qCoords = ($qStart + 1, $qStart + $maxAlnRowLen);
+        @dCoords = ($dStart + 1, $dStart + $maxAlnRowLen);
         ($qCoords[0], $dCoords[0]) = alignPos($qCoords[0], $dCoords[0], $maxPosLen);
 
         for (0 .. $maxAlnRowLen - 1) { $aln .= substr($query, $_, 1) eq substr($db, $_, 1) ? "|" : " "; }
@@ -707,7 +708,9 @@ sub importStockholm {
     if (length($seq{query})) {
 
         my ($aln);
-        ($qStart, $dStart) = alignPos($qStart, $dStart, $maxPosLen);
+        ($qStart, $dStart) = alignPos($qStart + 1, $dStart + 1, $maxPosLen);
+        $qEnd++;
+        $dEnd++;
 
         for (0 .. length($seq{query}) - 1) { $aln .= substr($seq{query}, $_, 1) eq substr($seq{db}, $_, 1) ? "|" : " "; }
 
@@ -724,16 +727,10 @@ sub importStockholm {
 sub alignPos {
 
     my ($pos1, $pos2, $maxLen) = @_;
-    my $spaces = " " x (max($maxLen, map { length($_) } ($pos1, $pos2)) - min(map { length($_) } ($pos1, $pos2)));
+    my $nSpaces = max($maxLen, map { length($_) } ($pos1, $pos2));
     
-    if (length($pos1) > length($pos2)) { $pos2 .= $spaces; }
-    elsif (length($pos1) < length($pos2)) { $pos1 .= $spaces; }
-    else {
-
-        $pos2 .= $spaces;
-        $pos1 .= $spaces;
-
-    }
+    $pos1 .= " " x ($nSpaces - length($pos1));
+    $pos2 .= " " x ($nSpaces - length($pos2));
 
     return($pos1, $pos2);
 
