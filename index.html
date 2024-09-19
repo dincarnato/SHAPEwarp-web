@@ -45,10 +45,7 @@
                         <div class="form-row">
                             <div class="form-section">
                                 <label for="category">Category:</label>
-                                <select id="category" name="category" onchange="updateDatabaseOptions()" required>
-                                    <option value="mammal">Mammals</option>
-                                    <option value="virus">Viruses</option>
-                                    <option value="other" selected="selected">Other</option>
+                                <select id="category" name="category" required>
                                 </select>
                             </div>
                             <div class="form-section">
@@ -276,39 +273,60 @@
             </div>
         </footer>
         <script>
-            function updateDatabaseOptions() {
-                
-                var selectedCategory = $("#category").val();
+            function loadTSVData(callback) {
+                $.ajax({
+                    url: 'databases.tsv', // Path to your TSV file on the server
+                    dataType: 'text',
+                    success: function(data) {
+                        callback(parseTSV(data));
+                    },
+                    error: function() {
+                        showError('Error loading database data');
+                    }
+                });
+            }
 
-                var databaseOptions = [];
-                if (selectedCategory === "mammal") {
-                    databaseOptions = [
-                        { text: "HEK293, in vivo, polyA+ (NAI-N3, Sun et al., 2021)", value: "HEK293_NAIN3_invivo_Sun2021" },
-                        { text: "HeLa, in vivo, polyA+ (NAI-N3, Sun et al., 2021)", value: "HeLa_NAIN3_invivo_Sun2021" },
-                        { text: "HepG2, in vivo, polyA+ (NAI-N3, Sun et al., 2021)", value: "HepG2_NAIN3_invivo_Sun2021" },
-                        { text: "H9 hESC, in vivo, polyA+ (NAI-N3, Sun et al., 2021)", value: "H9_NAIN3_invivo_Sun2021" },
-                        { text: "K562, in vivo, polyA+ (NAI-N3, Sun et al., 2021)", value: "K562_NAIN3_invivo_Sun2021" },
-                        { text: "E14 mES, in vivo, polyA+ (NAI-N3, Sun et al., 2021)", value: "mES_NAIN3_invivo_Sun2021" }
-                    ];
-                } else if (selectedCategory === "virus") {
-                    databaseOptions = [
-                        { text: "ZIKA, Asian strain, in vivo (NAI-N3, Li et al., 2018)", value: "ZIKV_Asian_NAIN3_invivo_Li2018" },
-                        { text: "ZIKA, African strain, in vivo (NAI-N3, Li et al., 2018)", value: "ZIKV_African_NAIN3_invivo_Li2018" },
-                        { text: "SARS-CoV-2, in vivo (NAI, Manfredonia et al., 2020)", value: "SARS2_NAI_invivo_Manfredonia2020" },
-                        { text: "SARS-CoV-2, in vitro (NAI, Manfredonia et al., 2020)", value: "SARS2_NAI_invitro_Manfredonia2020" },
-                        { text: "SARS-CoV-2, in vitro (2A3, Morandi et al., 2022)", value: "SARS2_2A3_invitro_Morandi2022" },
-                        { text: "SARS-CoV, in vitro (2A3, Morandi et al., 2022)", value: "SARS_2A3_invitro_Morandi2022" }
-                    ];
-                } else if (selectedCategory === "other") {
-                    databaseOptions = [
-                        { text: "rRNAs (multiple species), in vivo (2A3, Marinus et al., 2021)", value: "rRNAs_2A3_invivo_Marinus2021" }
-                    ];
-                }
-            
-                // Update the options in the "Database" select
-                var databaseSelect = $("#database");
-                databaseSelect.empty(); // Clear existing options
-                $.each(databaseOptions, function(index, option) {
+            // Function to parse the TSV file content
+            function parseTSV(tsv) {
+                const lines = tsv.trim().split('\n');
+                const parsedData = {};
+
+                lines.forEach(line => {
+                    const [category, text, value] = line.split('\t');
+                    if (!parsedData[category]) {
+                        parsedData[category] = [];
+                    }
+                    parsedData[category].push({ text, value });
+                });
+
+                return parsedData;
+            }
+
+            // Function to populate the category select-box
+            function populateCategoryOptions(parsedData) {
+                const categorySelect = $("#category");
+
+                // Clear existing options
+                categorySelect.empty();
+
+                // Populate with unique categories
+                Object.keys(parsedData).forEach(category => {
+                    const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+                    categorySelect.append($("<option>").text(formattedCategory).val(category));
+                });
+            }
+
+            // Function to update the database select-box
+            function updateDatabaseOptions(parsedData) {
+                const selectedCategory = $("#category").val();
+                const databaseSelect = $("#database");
+                const options = parsedData[selectedCategory] || [];
+
+                // Clear existing options
+                databaseSelect.empty();
+
+                // Populate with new options
+                options.forEach(option => {
                     databaseSelect.append($("<option>").text(option.text).val(option.value));
                 });
             }
@@ -375,7 +393,18 @@
                     fileNameElement.text(this.files[0] ? this.files[0].name : 'No file chosen');
                 });
             
-                updateDatabaseOptions();
+                loadTSVData(function(parsedData) {
+                    // Populate category select-box
+                    populateCategoryOptions(parsedData);
+
+                    // Update the database options based on the initial category selection
+                    updateDatabaseOptions(parsedData);
+
+                    // Add event listener to category change
+                    $("#category").change(function() {
+                        updateDatabaseOptions(parsedData);
+                    });
+                });
             
                 $('#shapewarp-form').submit(function(event) {
             

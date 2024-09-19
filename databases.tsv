@@ -1,0 +1,19 @@
+mammal	HEK293 (H. sapiens), in vivo, polyA+ (NAI-N3, Sun et al., 2021)	HEK293_NAIN3_invivo_Sun2021
+mammal	HeLa (H. sapiens), in vivo, polyA+ (NAI-N3, Sun et al., 2021)	HeLa_NAIN3_invivo_Sun2021
+mammal	HepG2 (H. sapiens), in vivo, polyA+ (NAI-N3, Sun et al., 2021)	HepG2_NAIN3_invivo_Sun2021
+mammal	H9 hESC (H. sapiens), in vivo, polyA+ (NAI-N3, Sun et al., 2021)	H9_NAIN3_invivo_Sun2021
+mammal	K562 (H. sapiens), in vivo, polyA+ (NAI-N3, Sun et al., 2021)	K562_NAIN3_invivo_Sun2021
+mammal	E14 mES (M. musculus), in vivo, polyA+ (NAI-N3, Sun et al., 2021)	mES_NAIN3_invivo_Sun2021
+mammal	MALAT1 lncRNA, A549 (H. sapiens), in vivo (5NIA, Monroy-Eklund et al., 2023)	MALAT1_A549_5NIA_invivo_Monroy-Eklund2023
+mammal	MALAT1 lncRNA, HEK293 (H. sapiens), in vivo (5NIA, Monroy-Eklund et al., 2023)	MALAT1_HEK293_5NIA_invivo_Monroy-Eklund2023
+mammal	MALAT1 lncRNA, A549+HEK293 (H. sapiens), ex vivo (5NIA, Monroy-Eklund et al., 2023)	MALAT1_Hsapiens_5NIA_exvivo_Monroy-Eklund2023
+mammal	MALAT1 lncRNA, VERO (C. sabaeus), in vivo (5NIA, Monroy-Eklund et al., 2023)	MALAT1_VERO_5NIA_invivo_Monroy-Eklund2023
+mammal	MALAT1 lncRNA, VERO (C. sabaeus), ex vivo (5NIA, Monroy-Eklund et al., 2023)	MALAT1_VERO_5NIA_exvivo_Monroy-Eklund2023
+bacteria	E. coli, in vivo (1M7, Mustoe et al., 2018)	Ecoli_1M7_invivo_Mustoe2018
+virus	ZIKA, Asian strain, in vivo (NAI-N3, Li et al., 2018)	ZIKV_Asian_NAIN3_invivo_Li2018
+virus	ZIKA, African strain, in vivo (NAI-N3, Li et al., 2018)	ZIKV_African_NAIN3_invivo_Li2018
+virus	SARS-CoV-2, in vivo (NAI, Manfredonia et al., 2020)	SARS2_NAI_invivo_Manfredonia2020
+virus	SARS-CoV-2, in vitro (NAI, Manfredonia et al., 2020)	SARS2_NAI_invitro_Manfredonia2020
+virus	SARS-CoV-2, in vitro (2A3, Morandi et al., 2022)	SARS2_2A3_invitro_Morandi2022
+virus	SARS-CoV, in vitro (2A3, Morandi et al., 2022)	SARS_2A3_invitro_Morandi2022
+other	rRNAs (multiple species), in vivo (2A3, Marinus et al., 2021)	rRNAs_2A3_invivo_Marinus2021
