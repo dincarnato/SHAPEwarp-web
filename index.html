@@ -292,11 +292,16 @@
                 const parsedData = {};
 
                 lines.forEach(line => {
-                    const [category, text, value] = line.split('\t');
+                    const [category, text, value, isDefault] = line.split('\t');
                     if (!parsedData[category]) {
-                        parsedData[category] = [];
+                        parsedData[category] = { databases: [], hasDefault: false };
                     }
-                    parsedData[category].push({ text, value });
+                    // If any option is marked as default, mark the category as having a default database
+                    const isDefaultOption = isDefault && isDefault.trim() === 'default';
+                    if (isDefaultOption) {
+                        parsedData[category].hasDefault = true;
+                    }
+                    parsedData[category].databases.push({ text, value, isDefault: isDefaultOption });
                 });
 
                 return parsedData;
@@ -309,26 +314,48 @@
                 // Clear existing options
                 categorySelect.empty();
 
+                let defaultCategory = null;
+
                 // Populate with unique categories
                 Object.keys(parsedData).forEach(category => {
                     const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
-                    categorySelect.append($("<option>").text(formattedCategory).val(category));
+                    const optionElement = $("<option>").text(formattedCategory).val(category);
+                    
+                    // If the category has a default database, mark it as the default category
+                    if (parsedData[category].hasDefault) {
+                        defaultCategory = category;
+                    }
+                    
+                    categorySelect.append(optionElement);
                 });
+
+                // If a default category exists, select it
+                if (defaultCategory) {
+                    categorySelect.val(defaultCategory);
+                    // Trigger change event to populate database select-box based on default category
+                    categorySelect.trigger('change');
+                }
             }
 
-            // Function to update the database select-box
             function updateDatabaseOptions(parsedData) {
                 const selectedCategory = $("#category").val();
                 const databaseSelect = $("#database");
-                const options = parsedData[selectedCategory] || [];
+                const options = parsedData[selectedCategory].databases || [];
 
                 // Clear existing options
                 databaseSelect.empty();
 
-                // Populate with new options
+                // Populate with new options and set default if marked
                 options.forEach(option => {
-                    databaseSelect.append($("<option>").text(option.text).val(option.value));
+                    const optionElement = $("<option>").text(option.text).val(option.value);
+                    if (option.isDefault) {
+                        optionElement.prop("selected", true); // Mark as default selected
+                    }
+                    databaseSelect.append(optionElement);
                 });
+
+                // Trigger change to reflect the selection
+                databaseSelect.trigger('change');
             }
             
             function updateSHAPEparams() {

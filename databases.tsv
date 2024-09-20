@@ -16,4 +16,6 @@ virus	SARS-CoV-2, in vivo (NAI, Manfredonia et al., 2020)	SARS2_NAI_invivo_Manfr
 virus	SARS-CoV-2, in vitro (NAI, Manfredonia et al., 2020)	SARS2_NAI_invitro_Manfredonia2020
 virus	SARS-CoV-2, in vitro (2A3, Morandi et al., 2022)	SARS2_2A3_invitro_Morandi2022
 virus	SARS-CoV, in vitro (2A3, Morandi et al., 2022)	SARS_2A3_invitro_Morandi2022
-other	rRNAs (multiple species), in vivo (2A3, Marinus et al., 2021)	rRNAs_2A3_invivo_Marinus2021
+virus	Influenza A virus, gRNA, in vivo (NAI-N3, Yang et al., 2024)	IAV_NAIN3_invivo_Yang2024
+virus	Influenza A virus, gRNA, in virio (NAI-N3, Yang et al., 2024)	IAV_NAIN3_invirio_Yang2024
+other	rRNAs (multiple species), in vivo (2A3, Marinus et al., 2021)	rRNAs_2A3_invivo_Marinus2021	default
