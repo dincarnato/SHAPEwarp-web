@@ -386,6 +386,7 @@ HTML
             @row = split /\t/;
             @oneBasedCoords = map { $_ + 1 } (@row[2 .. 5], split(/-/, $row[6]), split(/-/, $row[7]));
             $baseName = join("_", $row[1], join("-", @row[4,5]), $row[0], join("-", @row[2,3]));
+            $baseName =~ s/\\//g;
             $_ = formatValue($_) for (@row[8..10]);
             ($id, $accession, $organism) = parseMatchId($row[1]);
             $type = $row[-1] eq "?" ? ($n % 2 ? "non-signif-odd" : "non-signif-even") : ($n % 2 ? "odd" : "even");

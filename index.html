@@ -195,8 +195,8 @@
                         <div class="form-frame" data-title="Folding evaluation">
                             <div class="form-row">
                                 <div class="form-section">
-                                    <label for="shufflings">Shufflings:</label>
-                                    <input type="text" id="shufflings" name="shufflings" value="100">
+                                    <label for="shuffles">Shuffles:</label>
+                                    <input type="text" id="shuffles" name="shuffles" value="100">
                                 </div>
                                 <div class="form-section">
                                     <label for="block-size">Block size:</label>
@@ -565,9 +565,9 @@
 
                     if ($('#eval-align-fold').prop('checked')) {
 
-                        if (!$.isNumeric($('#shufflings').val()) || Math.floor($('#shufflings').val()) != $('#shufflings').val() || $('#shufflings').val() < 10) {
+                        if (!$.isNumeric($('#shuffles').val()) || Math.floor($('#shuffles').val()) != $('#shuffles').val() || $('#shuffles').val() < 10) {
                             event.preventDefault();
-                            showError('Shufflings must be an INT &ge; 10');
+                            showError('Shuffles must be an INT &ge; 10');
                         }
 
                         if (!$.isNumeric($('#block-size').val()) || Math.floor($('#block-size').val()) != $('#block-size').val() || $('#block-size').val() < 1) {

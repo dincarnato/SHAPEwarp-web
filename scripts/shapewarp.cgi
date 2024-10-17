@@ -173,7 +173,7 @@ HTML
                     if (exists $params{"eval-align-fold"} && $params{"eval-align-fold"} eq "on") {
 
                         $cmd .= " --eval-align-fold";
-                        $cmd .= " --$_ " . $params{$_} for (qw(shufflings block-size min-bp-support max-bp-span 
+                        $cmd .= " --$_ " . $params{$_} for (qw(shuffles block-size min-bp-support max-bp-span 
                                                             slope intercept));
                         
                         for (qw(in-block-shuffle no-lonely-pairs no-closing-gu ribosum-scoring)) {
@@ -198,6 +198,8 @@ HTML
 
                     # Runs SHAPEwarp
                     system($cmd);
+
+                    fixFilenames();
 
                     if (exists $params{"eval-align-fold"} && $params{"eval-align-fold"} eq "on") {
 
@@ -362,6 +364,31 @@ sub optimalThreadN {
     $nCores ||= 8;
 
     return(max(1, int($nCores / ($running + 1))));
+
+}
+
+sub fixFilenames {
+
+    my ($outDir, $alnDir, $reactDir);
+    $outDir = "../results/$jobId/";
+    $alnDir = $outDir . "alignments/";
+    $reactDir = $outDir . "reactivities/";
+
+    foreach my $dir ($alnDir, $reactDir) {
+
+        opendir(my $dh, $dir);
+        while(my $file = readdir($dh)) {
+
+            next if ($file =~ /^\./);
+
+            my $fixed = $file;
+            $fixed =~ s/\\//g;
+
+            move("$dir/$file", "$dir/$fixed");
+
+        }
+
+    }
 
 }
 
