@@ -3,8 +3,6 @@
 use strict;
 use CGI;
 use File::Copy;
-use File::Path qw(mkpath);
-use JSON;
 use POSIX qw(setsid);
 
 # Change to reflect the actual path to RNA Framework's lib/
@@ -19,7 +17,6 @@ my ($cgi, $jobId, $queryDir, $queryFh,
     %conf);
 
 %conf = ( swPath         => which("shapewarp"),
-          r2dtPath       => undef,
           msDelay        => 5000,
           maxQueryLen    => 500,
           maxTotQueryLen => 5000 );
@@ -69,10 +66,9 @@ print <<HTML;
                 <div style="text-align: center;">
 HTML
 
-if (!defined $conf{"swPath"} || 
-    (exists $params{"eval-align-fold"} && $params{"eval-align-fold"} eq "on" && !defined $conf{"r2dtPath"})) {
+if (!defined $conf{"swPath"}) {
 
-    $error = !defined $conf{"swPath"} ? "SHAPEwarp executable not found." : "R2DT Singularity image not found.";
+    $error = "SHAPEwarp executable not found.";
 
     print <<HTML;
                         <h1 class="page-title" style="color: black; font-size: 2em;">
@@ -200,19 +196,6 @@ HTML
                     system($cmd);
 
                     fixFilenames();
-
-                    if (exists $params{"eval-align-fold"} && $params{"eval-align-fold"} eq "on") {
-
-                        mkpath($outDir . "r2dt_input/", { mode => 0755 });
-                        mkpath($outDir . "r2dt_out/results/json/svg/", { mode => 0755 });
-
-                        # R2DT has some issue with paths. We need to place everything in the same dir to work
-                        copy("colorscheme.json", $outDir . "r2dt_out/results/json/");
-
-                        makeR2dtInputFiles();
-                        makeR2dtStructPlots();
-
-                    }
 
                     unlink($stdout) if (!-s $stdout);
                     unlink($stderr) if (!-s $stderr);
@@ -392,105 +375,6 @@ sub fixFilenames {
 
 }
 
-sub makeR2dtInputFiles {
-
-    my ($outDir, $alnDir, $reactDir, $fastaDir, $tsvDir);
-    $outDir = "../results/$jobId/";
-    $alnDir = $outDir . "alignments/";
-    $reactDir = $outDir . "reactivities/";
-    $fastaDir = $outDir . "r2dt_input/";
-    $tsvDir = $outDir . "r2dt_out/results/json/";
-
-    opendir(my $dh, $alnDir);
-    while (my $file = readdir($dh)) {
-
-        next if ($file !~ /\.sto$/);
-
-        my ($baseName, $structure, $json, %seq);
-        $baseName = $file;
-        $baseName =~ s/\.sto$//;
-
-        open(my $fh, "<", $alnDir . $file) or die $!;
-        while(<$fh>) {
-
-            chomp();
-
-            if (/^#=GC SS_cons/ || /^[^#\/]/) {
-
-                my @row = split " ";
-
-                if ($row[1] eq "SS_cons") { $structure = $row[2]; }
-                else { 
-                    
-                    $row[1] =~ tr/-T/xU/;
-                    $seq{keys %seq ? "db" : "query"} = $row[1]; 
-                    
-                }
-
-            }
-
-        }
-        close($fh);
-
-        open($fh, "<", $reactDir . $baseName . ".json") or die $!;
-        $json = do { local $/; <$fh> }; 
-        close($fh);
-
-        $json = decode_json($json);
-        $json->{"db"} = $json->{"target"};
-
-        foreach my $seq (qw(query db)) {
-
-            open(my $wh, ">", $fastaDir . $baseName . ".$seq.fasta") or die $!;
-            print $wh ">$baseName.$seq\n" . $seq{$seq} . "\n" . $structure . "\n";
-            close($wh);
-
-            @{$json->{$seq}} = map { $_ eq "NaN" ? "nan" : ($_ < 0.4 ? 0 : ($_ < 0.7 ? 0.5 : 1)) } @{$json->{$seq}};
-
-            open($wh, ">", $tsvDir . $baseName . ".$seq.tsv") or die $!;
-
-            print $wh join("\t", qw(residue_index residue_name shape_reactivity)) . "\n";
-
-            for my $i (0 .. $#{$json->{$seq}}) {
-
-                print $wh join("\t", $i + 1, substr($seq{$seq}, $i, 1), $json->{$seq}->[$i]) . "\n";
-
-            }
-
-            close($wh);
-
-        }
-
-    }
-    closedir($dh);
-
-}
-
-sub makeR2dtStructPlots {
-
-    my ($outDir, $fastaDir, $tsvDir, $r2dtDir);
-    $outDir = "../results/$jobId/";
-    $fastaDir = $outDir . "r2dt_input/";
-    $r2dtDir = $outDir . "r2dt_out/";
-    $tsvDir = $r2dtDir . "/results/json/";
-
-    opendir(my $dh, $fastaDir);
-    while(my $file = readdir($dh)) {
-
-        next if ($file !~ /\.fasta$/);
-
-        my $baseName = $file;
-        $baseName =~ s/\.fasta$//;
-
-        system("singularity exec " . $conf{"r2dtPath"} . " r2dt.py templatefree $fastaDir/$file $r2dtDir");
-        system("cd $tsvDir && singularity exec " . $conf{"r2dtPath"} . " python3 /rna/traveler/utils/enrich_json.py --input-json $baseName.colored.json --input-data $baseName.tsv --output $baseName.json");
-        system("cd $tsvDir && singularity exec " . $conf{"r2dtPath"} . " python3 /rna/traveler/utils/json2svg.py -p colorscheme.json -i $baseName.json -o svg/$baseName.svg");
-
-    }
-    closedir($dh);
-
-}
-
 sub parseConf {
     
     if (-e "../shapewarp.conf") {
@@ -508,7 +392,6 @@ sub parseConf {
             if (exists $conf{$param}) {
 
                 if (($param eq "swPath" && -e $value && -x $value) ||
-                    ($param eq "r2dtPath" && -e $value && -x $value) ||
                     ($param eq "msDelay" && isint($value) && ispositive($value)) ||
                     ($param eq "maxQueryLen" && isint($value) && $value >= 50) ||
                     ($param eq "maxTotQueryLen" && isint($value) && $value >= 50)) { $conf{$param} = $value; }

@@ -452,6 +452,12 @@ footer a, a:active, a:hover {
     color: black;
 }
 
+/* RFviewJS canvas and toolbar blend with the structure tab */
+.tab-content .rv-canvas,
+.tab-content .rv-toolbar {
+    background-color: #ecf0f1;
+}
+
 .detail-col-1 {
     font-weight: bold;
     padding-right: 10px;

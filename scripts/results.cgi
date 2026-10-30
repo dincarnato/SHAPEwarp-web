@@ -9,11 +9,10 @@ use lib "/var/www/html/shapewarp/scripts/lib";
 use Core::Mathematics qw(:all);
 
 my ($cgi, $jobId, $newUrl, $maxAlnRowLen,
-    $maxSVGsize, $plotData, $gotResults);
+    $plotData, $structData, $gotResults);
 $cgi = CGI->new();
 $jobId = $cgi->param("jobId");
 $maxAlnRowLen = 60;
-$maxSVGsize = 500;
 
 print $cgi->header("text/html");
 
@@ -29,7 +28,7 @@ print <<HTML;
       <link href="https://fonts.googleapis.com/css?family=Merriweather:400,400i|Orbitron:900|Raleway:300,400,400i,600,700" rel="stylesheet">
       <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
       <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
-      <script src="https://www.incarnatolab.com/js/svg-pan-zoom.js"></script>
+      <script src="https://cdn.jsdelivr.net/gh/dincarnato/RFviewJS\@v1.2.0/scripts/RFview.js"></script>
    </head>
    <body>
       <div id="menu-bar" class="menu-bar">
@@ -170,9 +169,14 @@ if (defined $gotResults) {
 
         var lastClickedTabId = null;
         var lastClickedRowId = null;
+        var structViewers = {};
 
 		var plotData = {
 $plotData
+        }
+
+        var structData = {
+$structData
         }
 
         \$(document).ready(function() {
@@ -262,8 +266,7 @@ $plotData
                 }
                 else if (tabId.endsWith("structure")) {
 
-                    loadReactPlot("#" + tabId + "-query");
-                    loadReactPlot("#" + tabId + "-db");
+                    loadStructViewer(tabId);
 
                 }
                 
@@ -303,13 +306,56 @@ $plotData
             });
         });
 
-        function loadReactPlot(svgId) {
-            window.panZoomRscape = svgPanZoom(svgId, {
-                zoomEnabled: true,
-                controlIconsEnabled: true,
-                fit: true,
-                center: true
+        // Lazily creates one RFviewJS instance per result (the container must be
+        // visible to be measured), holding both the query and the match structures
+        function loadStructViewer(tabId) {
+
+            if (structViewers[tabId]) {
+
+                structViewers[tabId].fit();
+
+                return;
+
+            }
+
+            var data = structData[tabId];
+
+            if (!data) { return; }
+
+            var viewer = new RFviewJS(document.getElementById(tabId + "-viewer"), {
+                id: data.id,
+                toolbarPosition: 'left',
+                statusBar: true,
+                canvasDrop: false,
+                showIndices: true,
+                showColors: true,
+                buttons: {
+                    upload: false,
+                    rfam: false,
+                    manualInput: false,
+                    cleanOne: false,
+                    cleanAll: false,
+                    toolbarPos: false
+                }
             });
+
+            viewer.load({
+                showColors: true,
+                colorMap: {
+                    type: 'discrete',
+                    min: 0,
+                    nanColor: '#b4b4b4',
+                    stops: [
+                        { value: 0.4, color: '#000000' },
+                        { value: 0.7, color: '#ffcd05' },
+                        { value: 1.0, color: '#971a24' }
+                    ]
+                },
+                structures: data.structures
+            });
+
+            structViewers[tabId] = viewer;
+
         };
 
         \$(document).ready(function(){
@@ -512,8 +558,10 @@ HTML
 
             if ($row[-1] ne "?") {
 
-                ($aln, $qSeq, $dSeq) = importStockholm($baseName);
-                $plotData .= importJson($baseName, $qSeq, $dSeq, $n);
+                my ($structure, $plotJs, $react);
+                ($aln, $qSeq, $dSeq, $structure) = importStockholm($baseName);
+                ($plotJs, $react) = importJson($baseName, $qSeq, $dSeq, $n);
+                $plotData .= $plotJs;
 
                 print <<HTML;
 						<div class="tab-content" id="result$n-alignment-content">
@@ -526,23 +574,13 @@ HTML
 
                 if ($hasStruct) {
 
-                    my ($querySVG, $dbSVG) = importStructSVG($baseName, $n);
+                    $structData .= structToJs($baseName, $n, $qSeq, $dSeq, $structure, $react, $row[0], $id || $row[1]);
 
                     print <<HTML;
 						<div class="tab-content" id="result$n-structure-content">
-							<table style="margin: auto; text-align: center;">
-                                <tr>
-                                    <td><p><strong>Query</strong></p></td>
-                                    <td style="width: 100px;">&nbsp;</td>
-                                    <td><p><strong>Match</strong></p></td>
-                                </tr>
-                                <tr>
-                                    <td>$querySVG</td>
-                                    <td>&nbsp;</td>
-                                    <td>$dbSVG</td>
-                                </tr>
-                            </table>
-                            <p style="text-align: right;">Structure plots generated using <a href="https://github.com/RNAcentral/R2DT" style="font-weight: bold;">R2DT</a></p>
+							<p style="text-align: center;">Use the structure switcher to toggle between the <strong>Query</strong> and the <strong>Match</strong></p>
+							<div id="result$n-structure-viewer" style="width: 100%; height: 600px;"></div>
+                            <p style="text-align: right;">Structure plots generated using <a href="https://github.com/dincarnato/RFviewJS" style="font-weight: bold;">RFviewJS</a></p>
 						</div>
 HTML
 
@@ -565,12 +603,8 @@ HTML
 
                     print <<HTML;
                                 <tr>
-                                    <td class="detail-col-1">Query structure plot (SVG):</td>
-                                    <td><a href="../results/$jobId/r2dt_out/results/json/svg/$baseName.query.svg" download>$baseName.query.svg</a></td>
-                                </tr>
-                                <tr>
-                                    <td class="detail-col-1">Match structure plot (SVG):</td>
-                                    <td><a href="../results/$jobId/r2dt_out/results/json/svg/$baseName.db.svg" download>$baseName.db.svg</a></td>
+                                    <td class="detail-col-1">Structure plots (SVG):</td>
+                                    <td>Use the save button in the Structure tab toolbar</td>
                                 </tr>
 HTML
 
@@ -666,10 +700,12 @@ sub importStockholm {
 
         chomp();
 
-        if (/^[^#\/]/) {
+        if (/^#=GC\s+SS_cons\s+(\S+)/) { $structure = $1; }
+        elsif (/^[^#\/]/) {
 
+            # SHAPEwarp writes the database entry first, then the query
             my @row = split " ";
-            $seq{keys %seq ? "db" : "query"} = $row[1];
+            $seq{keys %seq ? "query" : "db"} = $row[1];
 
         }
 
@@ -721,7 +757,7 @@ sub importStockholm {
 
     }
 
-    return($html, $qSeq, $dSeq);
+    return($html, $qSeq, $dSeq, $structure);
 
 }
 
@@ -782,44 +818,80 @@ sub importJson {
                 },
 JS
 
-    return($js);
+    return($js, $json);
 
 }
 
-sub importStructSVG {
+sub structToJs {
 
-    my ($baseName, $n) = @_;
+    # Builds the RFviewJS input for one result: query and match, each with its
+    # own ungapped sequence, the consensus structure projected onto it, its
+    # reactivities, and position labels in transcript coordinates
 
-    my ($query, $db, $width, $height);
+    my ($baseName, $n, $qSeq, $dSeq, $structure, $react, $queryId, $matchId) = @_;
 
-    open(my $fh, "<", "../results/$jobId/r2dt_out/results/json/svg/$baseName\.query.svg");
-    $query = do { local $/; <$fh> };
-    close($fh);
+    my ($dStart, $dEnd, $qStart, $qEnd, @structures);
+    ($dStart, $dEnd, $qStart, $qEnd) = $baseName =~ /_(\d+)-(\d+)_.+?_(\d+)-(\d+)$/;
 
-    open($fh, "<", "../results/$jobId/r2dt_out/results/json/svg/$baseName\.db.svg");
-    $db = do { local $/; <$fh> };
-    close($fh);
+    return("") if (!defined $structure || !defined $react);
 
-    $query =~ s/<svg/<svg id="result$n-structure-query"/;
-    $db =~ s/<svg/<svg id="result$n-structure-db"/;
-    $query =~ s/>x<\/text>/>-<\/text>/g;
-    $db =~ s/>x<\/text>/>-<\/text>/g;
-    $query =~ s/"text-green/"text-black/g;
-    $db =~ s/"text-green/"text-black/g;
-    $query =~ s/"text-/"text-svg text-/g;
-    $db =~ s/"text-/"text-svg text-/g;
-    $query =~ s/text \{ element-wise:/.text-svg \{ element-wise:/g;
-    $db =~ s/text \{ element-wise:/.text-svg \{ element-wise:/g;
+    foreach my $entry ([ "Query: $queryId (" . ($qStart + 1) . "-" . ($qEnd + 1) . ")", $qSeq, $react->{query}, $qStart ],
+                       [ "Match: $matchId (" . ($dStart + 1) . "-" . ($dEnd + 1) . ")", $dSeq, $react->{target}, $dStart ]) {
 
-    ($width, $height) = $query =~ /width="(.+?)" height="(.+?)"/;
-    $width ||= $maxSVGsize;
-    $height ||= $maxSVGsize;
-    ($width, $height) = ($width > $height ? $maxSVGsize : $width / $height * $maxSVGsize, 
-                         $height > $width ? $maxSVGsize : $height / $width * $maxSVGsize);
-    $query =~ s/width=".+?" height=".+?"/width="$width" height="$height"/;
-    $db =~ s/width=".+?" height=".+?"/width="$width" height="$height"/;
+        my ($label, $alnSeq, $values, $start) = @$entry;
+        my ($seq, $db, $pos, @partner, @react, @labels, %stacks);
+        $pos = $start;
 
-    return($query, $db);
+        # Consensus base-pairs (any bracket type)
+        @partner = (undef) x length($structure);
+
+        for my $i (0 .. length($structure) - 1) {
+
+            my $c = substr($structure, $i, 1);
+
+            if ($c =~ /^[\(\[\{<]$/) { push(@{$stacks{$c}}, $i); }
+            elsif ($c =~ /^[\)\]\}>]$/) {
+
+                my $o = { ")" => "(", "]" => "[", "}" => "{", ">" => "<" }->{$c};
+                my $j = pop(@{$stacks{$o}});
+
+                ($partner[$i], $partner[$j]) = ($j, $i) if (defined $j);
+
+            }
+
+        }
+
+        # Drops gapped columns; pairs survive only if both partners are bases in this sequence
+        for my $i (0 .. length($alnSeq) - 1) {
+
+            my $b = substr($alnSeq, $i, 1);
+
+            next if ($b eq "-" || $b eq ".");
+
+            my $j = $partner[$i];
+            my $s = defined $j && substr($alnSeq, $j, 1) !~ /^[-.]$/ ? substr($structure, $i, 1) : ".";
+            my $r = $values->[$i];
+
+            $seq .= $b;
+            $db .= $s;
+            push(@react, defined $r && $r ne "NaN" && $r == $r ? $r + 0 : undef);
+            push(@labels, ++$pos);
+
+        }
+
+        push(@structures, { label         => $label,
+                            sequence      => $seq,
+                            structure     => $db,
+                            values        => \@react,
+                            positionLabels => \@labels });
+
+    }
+
+    my $js = JSON->new->canonical->encode({ id         => $baseName,
+                                            structures => \@structures });
+    $js =~ s/<\//<\\\//g; # Safe inside <script>
+
+    return("\t\t\t    'result$n-structure': $js,\n");
 
 }
 

@@ -6,7 +6,6 @@ SHAPEwarp-web is a web user interface to the [SHAPEwarp](https://github.com/dinc
 ## Requirements
 - RNAFramework v2.8.7 or greater ([https://github.com/dincarnato/RNAFramework/](https://github.com/dincarnato/RNAFramework/))
 - SHAPEwarp v1.2 or greater ([https://github.com/dincarnato/SHAPEwarp/](https://github.com/dincarnato/SHAPEwarp/))
-- R2DT v1.4 ([https://github.com/RNAcentral/R2DT](https://github.com/RNAcentral/R2DT)), installed as a [Singularity](https://sylabs.io/singularity/) image (please refer to the [installation manual](https://docs.r2dt.bio/en/latest/installation.html))
 - A webserver (such as [Apache](https://httpd.apache.org/))
 
 The path to the RNA Framework's `lib/` folder must be added to the `PERL5LIB` environment variable of the user running the webserver process (typically `apache` or `www-data`). Alternatively, the path can be manually changed inside the `results.cgi` and `shapewarp.cgi` scripts (located under `scripts/`), by amending the following line:
@@ -27,13 +26,11 @@ Parameter names are case sensitive. Parameter/value pairs must be separated by t
 # Parameter           Description
 # =========           ===========
 # swPath              Full path to the SHAPEwarp executable (if not provided, will assume it is in PATH)
-# r2dtPath            Full path to the R2DT Singularity image
 # msDelay             Refresh frequency (in millisec)
 # maxQueryLen         Maximum allowed length of a single query
 # maxTotQueryLen      Maximum allowed cumulative length of multiple queries
 
 swPath=/usr/local/bin/shapewarp-main/target/release/shapewarp
-r2dtPath=/etc/r2dt
 msDelay=5000
 maxQueryLen=500
 maxTotQueryLen=5000
